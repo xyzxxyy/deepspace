@@ -2,679 +2,291 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>夏以昼 · 引力所归</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&display=swap');
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  :root {
-    --gold: #d4933a;
-    --gold-light: #e8c87a;
-    --purple: #7b5ea7;
-    --purple-deep: #4a3670;
-    --bg-dark: #070a12;
-    --bg-panel: rgba(12, 16, 28, 0.95);
-    --text-main: #e0d5c0;
-    --text-dim: #8a7a5a;
-    --text-ghost: #4a3a2a;
-    --border-gold: rgba(212, 147, 58, 0.3);
-    --border-soft: rgba(180, 140, 80, 0.12);
-  }
-
-  body {
-    background: var(--bg-dark);
-    font-family: 'Noto Serif SC', "PingFang SC", "Microsoft YaHei", serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 16px;
-    overflow: hidden;
-  }
-
-  /* 深空星域背景 */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse at 15% 20%, rgba(123, 94, 167, 0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at 85% 80%, rgba(212, 147, 58, 0.05) 0%, transparent 50%),
-      radial-gradient(1.5px 1.5px at 12% 25%, rgba(255,220,150,0.7), transparent),
-      radial-gradient(1px 1px at 35% 65%, rgba(255,255,255,0.4), transparent),
-      radial-gradient(2px 2px at 58% 15%, rgba(255,200,100,0.5), transparent),
-      radial-gradient(1px 1px at 78% 45%, rgba(255,255,255,0.3), transparent),
-      radial-gradient(1.5px 1.5px at 8% 78%, rgba(200,160,255,0.4), transparent),
-      radial-gradient(1px 1px at 68% 88%, rgba(255,255,255,0.35), transparent),
-      radial-gradient(1px 1px at 45% 38%, rgba(255,180,80,0.3), transparent),
-      radial-gradient(2px 2px at 92% 12%, rgba(255,200,100,0.45), transparent),
-      radial-gradient(1px 1px at 25% 90%, rgba(255,255,255,0.25), transparent),
-      radial-gradient(1.5px 1.5px at 72% 72%, rgba(180,140,255,0.3), transparent);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* 星云光晕 */
-  .nebula {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background:
-      radial-gradient(circle at 20% 30%, rgba(123, 94, 167, 0.06) 0%, transparent 40%),
-      radial-gradient(circle at 80% 70%, rgba(212, 147, 58, 0.04) 0%, transparent 40%);
-    animation: nebulaShift 20s ease-in-out infinite alternate;
-  }
-
-  @keyframes nebulaShift {
-    0% { opacity: 0.6; transform: scale(1); }
-    100% { opacity: 1; transform: scale(1.05); }
-  }
-
-  .terminal {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    max-width: 720px;
-    height: 92vh;
-    max-height: 860px;
-    background: var(--bg-panel);
-    border: 1px solid var(--border-gold);
-    border-radius: 16px;
-    box-shadow:
-      0 0 60px rgba(200, 150, 70, 0.06),
-      0 0 120px rgba(100, 80, 180, 0.04),
-      0 20px 60px rgba(0,0,0,0.6),
-      inset 0 0 80px rgba(0,0,0,0.4);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* 顶部装饰线 */
-  .terminal::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold), var(--purple), var(--gold), transparent);
-    opacity: 0.6;
-  }
-
-  /* ===== 头部 ===== */
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 24px 12px;
-    background: linear-gradient(135deg, rgba(30,25,50,0.95), rgba(18,15,32,0.95));
-    border-bottom: 1px solid var(--border-soft);
-    flex-shrink: 0;
-  }
-
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-
-  .avatar-ring {
-    position: relative;
-    width: 46px;
-    height: 46px;
-  }
-
-  .avatar-ring::before {
-    content: '';
-    position: absolute;
-    inset: -3px;
-    border-radius: 50%;
-    background: conic-gradient(var(--gold), var(--purple), var(--gold), var(--purple), var(--gold));
-    animation: ringRotate 8s linear infinite;
-  }
-
-  @keyframes ringRotate {
-    to { transform: rotate(360deg); }
-  }
-
-  .avatar {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #5a3d8a, #b8862d);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    font-weight: 700;
-    color: #fff;
-    z-index: 1;
-  }
-
-  .header-info h1 {
-    font-size: 16px;
-    color: var(--gold-light);
-    font-weight: 600;
-    letter-spacing: 2px;
-  }
-
-  .header-info .status {
-    font-size: 11px;
-    color: var(--text-dim);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 3px;
-    letter-spacing: 0.5px;
-  }
-
-  .status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #5ad87a;
-    box-shadow: 0 0 8px #5ad87a;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  /* 模式切换 */
-  .mode-switch {
-    display: flex;
-    background: rgba(255,255,255,0.04);
-    border-radius: 22px;
-    padding: 3px;
-    gap: 2px;
-    border: 1px solid rgba(180,140,80,0.12);
-  }
-
-  .mode-btn {
-    padding: 6px 16px;
-    border: none;
-    border-radius: 19px;
-    font-size: 11.5px;
-    cursor: pointer;
-    transition: all 0.35s;
-    background: transparent;
-    color: var(--text-ghost);
-    letter-spacing: 1px;
-    font-family: inherit;
-  }
-
-  .mode-btn.active {
-    background: linear-gradient(135deg, var(--purple), #b8862d);
-    color: #fff;
-    box-shadow: 0 2px 12px rgba(180, 140, 80, 0.3);
-  }
-
-  /* ===== 多维状态面板 ===== */
-  .status-panel {
-    padding: 10px 24px 8px;
-    border-bottom: 1px solid var(--border-soft);
-    flex-shrink: 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px 20px;
-  }
-
-  .stat-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .stat-label {
-    font-size: 10px;
-    color: var(--text-ghost);
-    letter-spacing: 1.5px;
-    white-space: nowrap;
-    min-width: 42px;
-  }
-
-  .stat-track {
-    flex: 1;
-    height: 3px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-
-  .stat-fill {
-    height: 100%;
-    width: 0%;
-    border-radius: 2px;
-    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .stat-fill.affection {
-    background: linear-gradient(90deg, var(--purple), var(--gold), #ff6b8a);
-  }
-
-  .stat-fill.trust {
-    background: linear-gradient(90deg, #3a6a9a, #5aadcf);
-  }
-
-  .stat-fill.tension {
-    background: linear-gradient(90deg, #8a3a5a, #cf5a7a);
-  }
-
-  .stat-fill.gravity {
-    background: linear-gradient(90deg, #4a3670, #7b5ea7, #b8862d);
-  }
-
-  .stat-value {
-    font-size: 10px;
-    color: var(--gold);
-    min-width: 24px;
-    text-align: right;
-    font-variant-numeric: tabular-nums;
-  }
-
-  /* ===== 聊天区域 ===== */
-  .chat-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 18px 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    scroll-behavior: smooth;
-    min-height: 0;
-  }
-
-  .chat-area::-webkit-scrollbar { width: 3px; }
-  .chat-area::-webkit-scrollbar-track { background: transparent; }
-  .chat-area::-webkit-scrollbar-thumb {
-    background: rgba(180,140,80,0.2);
-    border-radius: 2px;
-  }
-
-  /* 消息 */
-  .msg {
-    display: flex;
-    gap: 10px;
-    max-width: 86%;
-    animation: fadeIn 0.4s ease;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .msg.xia { align-self: flex-start; }
-  .msg.me { align-self: flex-end; flex-direction: row-reverse; }
-
-  .msg .mini-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 700;
-    color: #fff;
-  }
-
-  .msg.xia .mini-avatar {
-    background: linear-gradient(135deg, #5a3d8a, #b8862d);
-    box-shadow: 0 0 12px rgba(180, 140, 80, 0.15);
-  }
-
-  .msg.me .mini-avatar {
-    background: linear-gradient(135deg, #2a4a6a, #4a8aaa);
-  }
-
-  .bubble {
-    padding: 11px 16px;
-    border-radius: 14px;
-    font-size: 13.5px;
-    line-height: 1.75;
-    word-break: break-word;
-  }
-
-  .msg.xia .bubble {
-    background: linear-gradient(135deg, rgba(45,35,70,0.9), rgba(30,25,50,0.9));
-    border: 1px solid rgba(180,140,80,0.18);
-    color: var(--text-main);
-    border-top-left-radius: 4px;
-  }
-
-  .msg.me .bubble {
-    background: linear-gradient(135deg, rgba(25,45,75,0.9), rgba(20,35,60,0.9));
-    border: 1px solid rgba(90,140,200,0.18);
-    color: #c0d5e8;
-    border-top-right-radius: 4px;
-  }
-
-  /* 系统消息 */
-  .system-msg {
-    text-align: center;
-    font-size: 11px;
-    color: var(--text-ghost);
-    letter-spacing: 2px;
-    padding: 4px 0;
-    position: relative;
-  }
-
-  .system-msg::before,
-  .system-msg::after {
-    content: '· · ·';
-    margin: 0 10px;
-    color: rgba(180,140,80,0.15);
-  }
-
-  /* 记忆回溯卡片 */
-  .memory-card {
-    align-self: center;
-    max-width: 90%;
-    padding: 14px 18px;
-    background: linear-gradient(135deg, rgba(123, 94, 167, 0.08), rgba(212, 147, 58, 0.06));
-    border: 1px solid rgba(212, 147, 58, 0.15);
-    border-radius: 10px;
-    font-size: 12px;
-    color: var(--text-dim);
-    line-height: 1.8;
-    animation: memoryFade 1s ease;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .memory-card::before {
-    content: '◈ 记忆回溯';
-    display: block;
-    font-size: 10px;
-    color: var(--gold);
-    letter-spacing: 2px;
-    margin-bottom: 8px;
-    opacity: 0.7;
-  }
-
-  @keyframes memoryFade {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
-  }
-
-  /* 打字指示器 */
-  .typing-indicator {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 10px 16px;
-  }
-
-  .typing-indicator span {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--text-dim);
-    animation: typing 1.2s infinite;
-  }
-
-  .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-  .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-
-  @keyframes typing {
-    0%, 60%, 100% { opacity: 0.25; transform: translateY(0); }
-    30% { opacity: 1; transform: translateY(-5px); }
-  }
-
-  /* ===== 快捷操作 ===== */
-  .quick-options {
-    padding: 0 24px 10px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    flex-shrink: 0;
-  }
-
-  .quick-btn {
-    padding: 6px 14px;
-    border-radius: 16px;
-    border: 1px solid rgba(180,140,80,0.2);
-    background: rgba(255,255,255,0.02);
-    color: #8a7a5a;
-    font-size: 11px;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-family: inherit;
-    letter-spacing: 0.5px;
-  }
-
-  .quick-btn:hover {
-    background: rgba(180,140,80,0.1);
-    color: var(--gold-light);
-    border-color: rgba(180,140,80,0.45);
-    box-shadow: 0 0 16px rgba(180,140,80,0.08);
-  }
-
-  .quick-btn.special {
-    border-color: rgba(123, 94, 167, 0.3);
-    color: #9a7abf;
-  }
-
-  .quick-btn.special:hover {
-    background: rgba(123, 94, 167, 0.1);
-    border-color: rgba(123, 94, 167, 0.6);
-    color: #c8a8e8;
-  }
-
-  /* ===== 输入区 ===== */
-  .input-area {
-    padding: 12px 24px 18px;
-    border-top: 1px solid var(--border-soft);
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    background: rgba(8,11,20,0.7);
-    flex-shrink: 0;
-  }
-
-  .input-area input {
-    flex: 1;
-    padding: 11px 18px;
-    border-radius: 24px;
-    border: 1px solid rgba(180,140,80,0.18);
-    background: rgba(255,255,255,0.03);
-    color: var(--text-main);
-    font-size: 13px;
-    outline: none;
-    transition: all 0.35s;
-    font-family: inherit;
-  }
-
-  .input-area input::placeholder {
-    color: var(--text-ghost);
-    font-style: italic;
-  }
-
-  .input-area input:focus {
-    border-color: rgba(200,160,80,0.45);
-    box-shadow: 0 0 20px rgba(180,140,80,0.08);
-    background: rgba(255,255,255,0.05);
-  }
-
-  .input-area button {
-    padding: 11px 24px;
-    border-radius: 24px;
-    border: none;
-    background: linear-gradient(135deg, var(--purple), #b8862d);
-    color: #fff;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.35s;
-    white-space: nowrap;
-    letter-spacing: 2px;
-    font-family: inherit;
-  }
-
-  .input-area button:hover {
-    box-shadow: 0 0 28px rgba(180,140,80,0.25);
-    transform: translateY(-1px);
-  }
-
-  .input-area button:active {
-    transform: translateY(0);
-  }
-
-  /* ===== 特殊事件弹窗 ===== */
-  .event-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(5, 7, 12, 0.88);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s;
-    border-radius: 16px;
-  }
-
-  .event-overlay.active {
-    opacity: 1;
-    pointer-events: all;
-  }
-
-  .event-box {
-    max-width: 460px;
-    width: 90%;
-    padding: 28px 32px;
-    background: linear-gradient(135deg, rgba(30,25,50,0.98), rgba(18,15,32,0.98));
-    border: 1px solid rgba(212, 147, 58, 0.3);
-    border-radius: 12px;
-    text-align: center;
-    transform: scale(0.9);
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 0 0 60px rgba(180,140,80,0.1);
-  }
-
-  .event-overlay.active .event-box {
-    transform: scale(1);
-  }
-
-  .event-box .event-icon {
-    font-size: 32px;
-    margin-bottom: 12px;
-    display: block;
-  }
-
-  .event-box h3 {
-    font-size: 15px;
-    color: var(--gold-light);
-    letter-spacing: 3px;
-    margin-bottom: 12px;
-  }
-
-  .event-box p {
-    font-size: 12.5px;
-    color: var(--text-dim);
-    line-height: 1.8;
-    margin-bottom: 20px;
-  }
-
-  .event-box button {
-    padding: 9px 28px;
-    border-radius: 20px;
-    border: 1px solid rgba(212, 147, 58, 0.4);
-    background: transparent;
-    color: var(--gold-light);
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.3s;
-    letter-spacing: 2px;
-    font-family: inherit;
-  }
-
-  .event-box button:hover {
-    background: rgba(212, 147, 58, 0.12);
-    box-shadow: 0 0 20px rgba(212, 147, 58, 0.15);
-  }
-
-  /* 响应式 */
-  @media (max-width: 520px) {
-    .terminal { border-radius: 10px; height: 96vh; }
-    .chat-area { padding: 14px 16px; }
-    .header { padding: 12px 16px 10px; }
-    .status-panel { padding: 8px 16px 6px; grid-template-columns: 1fr; }
-    .quick-options { padding: 0 16px 8px; }
-    .input-area { padding: 10px 16px 14px; }
-    .bubble { font-size: 12.5px; padding: 9px 13px; }
-    .mode-btn { padding: 5px 12px; font-size: 10.5px; }
-  }
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#d4933a;--gold-light:#e8c87a;--purple:#7b5ea7;--purple-deep:#4a3670;
+  --bg-dark:#05070e;--bg-panel:rgba(9,12,20,0.97);
+  --text-main:#d8cdb8;--text-dim:#7a6a4a;--text-ghost:#332a1e;
+  --border-gold:rgba(212,147,58,0.22);--border-soft:rgba(180,140,80,0.07);
+  --shadow-ambient:0 0 80px rgba(200,150,70,0.04),0 0 160px rgba(100,80,180,0.02);
+}
+body{
+  background:var(--bg-dark);font-family:'Noto Serif SC',"PingFang SC","Microsoft YaHei",serif;
+  display:flex;justify-content:center;align-items:center;min-height:100vh;padding:10px;overflow:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse at 18% 12%,rgba(123,94,167,0.05) 0%,transparent 50%),
+    radial-gradient(ellipse at 82% 88%,rgba(212,147,58,0.03) 0%,transparent 50%),
+    radial-gradient(1.5px 1.5px at 8% 18%,rgba(255,220,150,0.55),transparent),
+    radial-gradient(1px 1px at 28% 55%,rgba(255,255,255,0.25),transparent),
+    radial-gradient(2px 2px at 52% 10%,rgba(255,200,100,0.4),transparent),
+    radial-gradient(1px 1px at 72% 38%,rgba(255,255,255,0.2),transparent),
+    radial-gradient(1.5px 1.5px at 5% 72%,rgba(200,160,255,0.3),transparent),
+    radial-gradient(1px 1px at 62% 82%,rgba(255,255,255,0.25),transparent),
+    radial-gradient(1px 1px at 38% 32%,rgba(255,180,80,0.2),transparent),
+    radial-gradient(2px 2px at 88% 8%,rgba(255,200,100,0.35),transparent),
+    radial-gradient(1px 1px at 18% 85%,rgba(255,255,255,0.18),transparent),
+    radial-gradient(1.5px 1.5px at 48% 70%,rgba(180,140,255,0.25),transparent);
+  pointer-events:none;z-index:0;animation:starDrift 80s linear infinite;
+}
+@keyframes starDrift{0%{transform:translateY(0) scale(1)}100%{transform:translateY(-12px) scale(1.02)}}
+.nebula{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(circle at 30% 30%,rgba(123,94,167,0.04) 0%,transparent 45%),
+    radial-gradient(circle at 70% 70%,rgba(212,147,58,0.025) 0%,transparent 45%);
+  animation:nebulaShift 30s ease-in-out infinite alternate;
+}
+@keyframes nebulaShift{0%{opacity:0.4;transform:scale(1)}100%{opacity:1;transform:scale(1.08)}}
+
+.terminal{
+  position:relative;z-index:1;width:100%;max-width:780px;height:95vh;max-height:920px;
+  background:var(--bg-panel);border:1px solid var(--border-gold);border-radius:14px;
+  box-shadow:var(--shadow-ambient),0 24px 80px rgba(0,0,0,0.75),inset 0 0 120px rgba(0,0,0,0.5);
+  overflow:hidden;display:flex;flex-direction:column;
+}
+.terminal::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),var(--purple),var(--gold),transparent);opacity:0.45;
+}
+/* 相位光晕 */
+.terminal::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:120px;pointer-events:none;
+  background:linear-gradient(180deg,rgba(123,94,167,0.03),transparent);opacity:0;transition:opacity 1s;
+}
+.terminal[data-phase="1"]::after{opacity:1;background:linear-gradient(180deg,rgba(123,94,167,0.06),transparent)}
+.terminal[data-phase="2"]::after{opacity:1;background:linear-gradient(180deg,rgba(180,80,100,0.05),transparent)}
+.terminal[data-phase="3"]::after{opacity:1;background:linear-gradient(180deg,rgba(212,147,58,0.05),transparent)}
+
+/* 头部 */
+.header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 22px 9px;background:linear-gradient(135deg,rgba(24,19,42,0.97),rgba(14,11,24,0.97));
+  border-bottom:1px solid var(--border-soft);flex-shrink:0;
+}
+.header-left{display:flex;align-items:center;gap:12px}
+.avatar-ring{position:relative;width:46px;height:46px}
+.avatar-ring::before{
+  content:'';position:absolute;inset:-2.5px;border-radius:50%;
+  background:conic-gradient(var(--gold),var(--purple),var(--gold),var(--purple),var(--gold));
+  animation:ringRotate 12s linear infinite;
+}
+@keyframes ringRotate{to{transform:rotate(360deg)}}
+.avatar{
+  position:absolute;inset:0;border-radius:50%;background:linear-gradient(135deg,#3d2570,#906020);
+  display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;z-index:1;
+  font-family:'Noto Serif SC',serif;
+}
+.header-info h1{font-size:15px;color:var(--gold-light);font-weight:600;letter-spacing:4px;font-family:'Noto Serif SC',serif}
+.header-info .status{font-size:10px;color:var(--text-dim);display:flex;align-items:center;gap:5px;margin-top:3px;letter-spacing:1px}
+.status-dot{width:5px;height:5px;border-radius:50%;background:#5ad87a;box-shadow:0 0 8px #5ad87a;animation:pulse 2.2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.2}}
+
+/* 阶段指示 */
+.phase-bar{
+  display:flex;padding:6px 22px 3px;gap:0;border-bottom:1px solid var(--border-soft);flex-shrink:0;
+  background:rgba(7,9,16,0.6);
+}
+.phase-step{
+  flex:1;text-align:center;font-size:8.5px;color:var(--text-ghost);letter-spacing:2px;
+  padding:5px 0;position:relative;transition:all 0.6s;cursor:default;
+}
+.phase-step.active{color:var(--gold);text-shadow:0 0 12px rgba(212,147,58,0.3)}
+.phase-step.done{color:rgba(212,147,58,0.35)}
+.phase-step .dot{
+  display:block;width:4px;height:4px;border-radius:50%;background:var(--text-ghost);
+  margin:4px auto 0;transition:all 0.6s;
+}
+.phase-step.active .dot{background:var(--gold);box-shadow:0 0 8px var(--gold);width:5px;height:5px}
+.phase-step.done .dot{background:rgba(212,147,58,0.35)}
+
+/* 状态条 */
+.status-panel{
+  padding:7px 22px 5px;border-bottom:1px solid var(--border-soft);flex-shrink:0;
+  display:grid;grid-template-columns:1fr 1fr;gap:5px 16px;
+}
+.stat-row{display:flex;align-items:center;gap:6px}
+.stat-label{font-size:9px;color:var(--text-ghost);letter-spacing:1.5px;white-space:nowrap;min-width:36px}
+.stat-track{flex:1;height:2.5px;background:rgba(255,255,255,0.035);border-radius:2px;overflow:hidden}
+.stat-fill{height:100%;width:0%;border-radius:2px;transition:width 1.2s cubic-bezier(0.4,0,0.2,1)}
+.stat-fill.affection{background:linear-gradient(90deg,#4a2d7a,var(--gold),#ff6b8a)}
+.stat-fill.possess{background:linear-gradient(90deg,#5a1a3a,#cf5a7a,#ff4060)}
+.stat-fill.gravity{background:linear-gradient(90deg,#2a1a4a,#7b5ea7,#c8963a)}
+.stat-fill.trust{background:linear-gradient(90deg,#1a3a5a,#5aadcf)}
+.stat-value{font-size:9px;color:var(--gold);min-width:20px;text-align:right;font-variant-numeric:tabular-nums}
+
+/* 聊天区 */
+.chat-area{
+  flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:13px;
+  scroll-behavior:smooth;min-height:0;
+}
+.chat-area::-webkit-scrollbar{width:2px}
+.chat-area::-webkit-scrollbar-thumb{background:rgba(180,140,80,0.12);border-radius:1px}
+.msg{display:flex;gap:8px;max-width:88%;animation:fadeIn 0.55s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.msg.xia{align-self:flex-start}
+.msg.me{align-self:flex-end;flex-direction:row-reverse}
+.msg .mini-avatar{
+  width:29px;height:29px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;
+}
+.msg.xia .mini-avatar{background:linear-gradient(135deg,#3d2570,#906020);box-shadow:0 0 14px rgba(180,140,80,0.08)}
+.msg.me .mini-avatar{background:linear-gradient(135deg,#1a3050,#3a6a8a)}
+.bubble{padding:10px 15px;border-radius:13px;font-size:13px;line-height:1.85;word-break:break-word}
+.msg.xia .bubble{
+  background:linear-gradient(135deg,rgba(36,28,56,0.93),rgba(24,18,40,0.93));
+  border:1px solid rgba(180,140,80,0.12);color:var(--text-main);border-top-left-radius:3px;
+}
+.msg.me .bubble{
+  background:linear-gradient(135deg,rgba(18,34,58,0.93),rgba(14,26,46,0.93));
+  border:1px solid rgba(90,140,200,0.12);color:#b0c5d8;border-top-right-radius:3px;
+}
+/* 动作描写 */
+.action{
+  align-self:flex-start;max-width:88%;font-size:11.5px;color:var(--text-ghost);
+  font-style:italic;letter-spacing:0.5px;line-height:1.8;padding:2px 0 2px 37px;
+  animation:fadeIn 0.8s ease;
+}
+.action::before{content:'（';margin-right:1px}
+.action::after{content:'）';margin-left:1px}
+/* 旁白 */
+.narration{
+  align-self:center;max-width:94%;text-align:center;font-size:11px;color:var(--text-ghost);
+  letter-spacing:2px;line-height:2;padding:6px 0;animation:fadeIn 1s ease;
+}
+.narration::before,.narration::after{content:'—';margin:0 8px;color:rgba(180,140,80,0.1)}
+/* 记忆碎片 */
+.memory-card{
+  align-self:center;max-width:95%;padding:14px 20px;
+  background:linear-gradient(135deg,rgba(123,94,167,0.05),rgba(212,147,58,0.03));
+  border:1px solid rgba(212,147,58,0.1);border-radius:10px;
+  font-size:12px;color:var(--text-dim);line-height:2;animation:memoryIn 1.4s ease;
+  position:relative;overflow:hidden;
+}
+.memory-card::before{
+  content:'◈ 记忆碎片';display:block;font-size:8.5px;color:var(--gold);
+  letter-spacing:4px;margin-bottom:8px;opacity:0.55;
+}
+.memory-card::after{
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(212,147,58,0.03),transparent);
+  animation:memoryShine 4s ease infinite;
+}
+@keyframes memoryIn{from{opacity:0;transform:scale(0.95) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes memoryShine{0%{left:-100%}100%{left:100%}}
+
+/* 打字 */
+.typing-indicator{display:flex;align-items:center;gap:5px;padding:9px 15px}
+.typing-indicator span{width:5px;height:5px;border-radius:50%;background:var(--text-dim);animation:typing 1.3s infinite}
+.typing-indicator span:nth-child(2){animation-delay:0.2s}
+.typing-indicator span:nth-child(3){animation-delay:0.4s}
+@keyframes typing{0%,60%,100%{opacity:0.15;transform:translateY(0)}30%{opacity:1;transform:translateY(-5px)}}
+
+/* 快捷 */
+.quick-options{padding:0 20px 7px;display:flex;flex-wrap:wrap;gap:5px;flex-shrink:0}
+.quick-btn{
+  padding:5px 13px;border-radius:15px;border:1px solid rgba(180,140,80,0.12);
+  background:rgba(255,255,255,0.012);color:#7a6a4a;font-size:10.5px;cursor:pointer;
+  transition:all 0.35s;font-family:inherit;letter-spacing:0.5px;
+}
+.quick-btn:hover{background:rgba(180,140,80,0.07);color:var(--gold-light);border-color:rgba(180,140,80,0.35);box-shadow:0 0 16px rgba(180,140,80,0.05)}
+.quick-btn.special{border-color:rgba(123,94,167,0.2);color:#8a6abf}
+.quick-btn.special:hover{background:rgba(123,94,167,0.07);border-color:rgba(123,94,167,0.45);color:#b898e8}
+.quick-btn.danger{border-color:rgba(180,60,90,0.2);color:#a05070}
+.quick-btn.danger:hover{background:rgba(180,60,90,0.07);border-color:rgba(180,60,90,0.45);color:#d87898}
+
+/* 输入 */
+.input-area{
+  padding:10px 20px 16px;border-top:1px solid var(--border-soft);
+  display:flex;gap:9px;align-items:center;background:rgba(5,7,13,0.8);flex-shrink:0;
+}
+.input-area input{
+  flex:1;padding:10px 17px;border-radius:22px;border:1px solid rgba(180,140,80,0.12);
+  background:rgba(255,255,255,0.02);color:var(--text-main);font-size:13px;outline:none;
+  transition:all 0.4s;font-family:inherit;
+}
+.input-area input::placeholder{color:var(--text-ghost);font-style:italic;font-size:12px}
+.input-area input:focus{border-color:rgba(200,160,80,0.35);box-shadow:0 0 28px rgba(180,140,80,0.05);background:rgba(255,255,255,0.03)}
+.input-area button{
+  padding:10px 22px;border-radius:22px;border:none;
+  background:linear-gradient(135deg,#4a2d7a,#906020);color:#fff;font-size:12.5px;
+  cursor:pointer;transition:all 0.35s;letter-spacing:3px;font-family:inherit;white-space:nowrap;
+}
+.input-area button:hover{box-shadow:0 0 32px rgba(180,140,80,0.18);transform:translateY(-1px)}
+.input-area button:active{transform:translateY(0)}
+
+/* 事件 */
+.event-overlay{
+  position:absolute;inset:0;background:rgba(3,5,9,0.92);display:flex;align-items:center;justify-content:center;
+  z-index:10;opacity:0;pointer-events:none;transition:opacity 0.7s;border-radius:14px;
+}
+.event-overlay.active{opacity:1;pointer-events:all}
+.event-box{
+  max-width:500px;width:90%;padding:32px 36px;
+  background:linear-gradient(135deg,rgba(22,17,38,0.99),rgba(12,9,20,0.99));
+  border:1px solid rgba(212,147,58,0.2);border-radius:12px;text-align:center;
+  transform:scale(0.9);transition:transform 0.55s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow:0 0 100px rgba(180,140,80,0.06);
+}
+.event-overlay.active .event-box{transform:scale(1)}
+.event-box .event-icon{font-size:28px;margin-bottom:10px;display:block}
+.event-box h3{font-size:14px;color:var(--gold-light);letter-spacing:4px;margin-bottom:12px;font-weight:600}
+.event-box p{font-size:12px;color:var(--text-dim);line-height:2;margin-bottom:20px}
+.event-box button{
+  padding:8px 28px;border-radius:18px;border:1px solid rgba(212,147,58,0.3);
+  background:transparent;color:var(--gold-light);font-size:11.5px;cursor:pointer;
+  transition:all 0.35s;letter-spacing:3px;font-family:inherit;
+}
+.event-box button:hover{background:rgba(212,147,58,0.08);box-shadow:0 0 28px rgba(212,147,58,0.1)}
+
+@media(max-width:520px){
+  .terminal{border-radius:10px;height:97vh}
+  .chat-area{padding:12px 14px}
+  .header{padding:10px 14px 7px}
+  .status-panel{padding:5px 14px 4px;grid-template-columns:1fr}
+  .phase-bar{padding:4px 14px 2px}
+  .quick-options{padding:0 14px 5px}
+  .input-area{padding:8px 14px 12px}
+  .bubble{font-size:12px;padding:8px 12px}
+}
 </style>
 </head>
 <body>
-
 <div class="nebula"></div>
-
-<div class="terminal">
-  <!-- 头部 -->
+<div class="terminal" id="terminal" data-phase="0">
   <div class="header">
     <div class="header-left">
-      <div class="avatar-ring">
-        <div class="avatar">昼</div>
-      </div>
+      <div class="avatar-ring"><div class="avatar">昼</div></div>
       <div class="header-info">
         <h1>夏以昼</h1>
-        <div class="status">
-          <span class="status-dot"></span>
-          <span id="statusText">远空舰队 · 引力场稳定</span>
-        </div>
+        <div class="status"><span class="status-dot"></span><span id="statusText">远空舰队 · 信号接入中</span></div>
       </div>
     </div>
-    <div class="mode-switch">
-      <button class="mode-btn active" data-mode="brother" onclick="switchMode('brother')">☀ 日常</button>
-      <button class="mode-btn" data-mode="officer" onclick="switchMode('officer')">◈ 执舰官</button>
-    </div>
   </div>
-
-  <!-- 多维状态 -->
+  <div class="phase-bar" id="phaseBar">
+    <div class="phase-step" data-phase="0">兄妹期<span class="dot"></span></div>
+    <div class="phase-step" data-phase="1">暧昧期<span class="dot"></span></div>
+    <div class="phase-step" data-phase="2">确立关系<span class="dot"></span></div>
+    <div class="phase-step" data-phase="3">深度亲密<span class="dot"></span></div>
+  </div>
   <div class="status-panel">
-    <div class="stat-row">
-      <span class="stat-label">牵绊</span>
-      <div class="stat-track"><div class="stat-fill affection" id="affectionFill"></div></div>
-      <span class="stat-value" id="affectionValue">0</span>
-    </div>
-    <div class="stat-row">
-      <span class="stat-label">信任</span>
-      <div class="stat-track"><div class="stat-fill trust" id="trustFill"></div></div>
-      <span class="stat-value" id="trustValue">0</span>
-    </div>
-    <div class="stat-row">
-      <span class="stat-label">张力</span>
-      <div class="stat-track"><div class="stat-fill tension" id="tensionFill"></div></div>
-      <span class="stat-value" id="tensionValue">0</span>
-    </div>
-    <div class="stat-row">
-      <span class="stat-label">引力</span>
-      <div class="stat-track"><div class="stat-fill gravity" id="gravityFill"></div></div>
-      <span class="stat-value" id="gravityValue">0</span>
-    </div>
+    <div class="stat-row"><span class="stat-label">牵绊</span><div class="stat-track"><div class="stat-fill affection" id="affFill"></div></div><span class="stat-value" id="affVal">0</span></div>
+    <div class="stat-row"><span class="stat-label">占有</span><div class="stat-track"><div class="stat-fill possess" id="posFill"></div></div><span class="stat-value" id="posVal">0</span></div>
+    <div class="stat-row"><span class="stat-label">引力</span><div class="stat-track"><div class="stat-fill gravity" id="gravFill"></div></div><span class="stat-value" id="gravVal">0</span></div>
+    <div class="stat-row"><span class="stat-label">信任</span><div class="stat-track"><div class="stat-fill trust" id="truFill"></div></div><span class="stat-value" id="truVal">0</span></div>
   </div>
-
-  <!-- 聊天区 -->
   <div class="chat-area" id="chatArea"></div>
-
-  <!-- 快捷操作 -->
   <div class="quick-options" id="quickOptions"></div>
-
-  <!-- 输入区 -->
   <div class="input-area">
     <input type="text" id="userInput" placeholder="对他说话……" autocomplete="off">
     <button onclick="sendMessage()">发送</button>
   </div>
-
-  <!-- 事件弹窗 -->
   <div class="event-overlay" id="eventOverlay">
     <div class="event-box" id="eventBox">
       <span class="event-icon" id="eventIcon"></span>
@@ -684,618 +296,602 @@
     </div>
   </div>
 </div>
-
 <script>
-// =============================================
-// 夏以昼 · 引力所归 — 深度互动终端
-// 设定依据：恋与深空官方资料 + 角色剧情线
-// 核心：明暗反差 / 温柔腹黑 / 偏执占有 / 引力控制
-// =============================================
+// ================================================================
+// 夏以昼 · 引力所归 — 四阶段沉浸式互动
+// 依据：《恋与深空》官方设定 + 用户提供的人物全面分析文档
+// 核心：阳光是伪装，阴暗才是底色 / 狗狗蛇 / 锚点与信仰
+// ================================================================
 
-// ========== 全局状态 ==========
-const state = {
-  mode: 'brother',      // brother | officer
-  affection: 0,          // 牵绊度 0-100
-  trust: 0,              // 信任度 0-100
-  tension: 0,            // 张力值 0-100
-  gravity: 0,            // 引力共鸣 0-100
-  turnCount: 0,          // 对话轮数
-  isTyping: false,
-  triggeredMemories: new Set(),
-  triggeredEvents: new Set(),
-  chatLog: [],
-  consecutiveIntimacy: 0,  // 连续亲密对话计数
-  lastTopic: null
-};
-
-// ========== 记忆碎片库 ==========
-// 基于官方剧情：盖亚实验室 / 奶奶 / 军校 / 爆炸 / 重逢 / 无尽夏
-const memoryFragments = [
-  {
-    id: 'childhood',
-    trigger: { minAffection: 8, keywords: ['小时候', '童年', '从前', '以前'] },
-    text: '那年你五岁，奶奶带着七岁的他出现在孤儿院门口。你跑过去拉住他的手，喊了一声"哥哥"。他愣了一下，然后轻轻回握住你。从那以后，他就再也没有松开过。'
-  },
-  {
-    id: 'lab',
-    trigger: { minAffection: 15, keywords: ['实验', '盖亚', '002', '研究'] },
-    text: '盖亚研究中心，002号供体。九岁的他被进行了742次实验。别的小孩被父母呵护的年纪，他已经在学习如何在疼痛中保持清醒。可他从来不对你说这些。你问起的时候，他只是笑笑："都过去了。"'
-  },
-  {
-    id: 'military',
-    trigger: { minAffection: 20, keywords: ['军校', '天行大学', '飞行', '飞行员', '飞机'] },
-    text: '他考上天行大学航天学院那年，你在车站送他。海棠花开得正盛。他弯腰替你拂去肩上的花瓣，说："等我回来。"后来他成了DAA战斗机飞行员，代号FY-26。你小时候最喜欢的那架。'
-  },
-  {
-    id: 'explosion',
-    trigger: { minAffection: 30, keywords: ['爆炸', '死', '两年', '消失', '回来'] },
-    text: '那场爆炸之后，所有人都说他死了。你等了两年。两年里你翻遍了每一条关于流云区爆炸案的新闻，反复确认那个名字。然后他回来了。右臂是机械的，瞳色是紫橙渐变的，熟悉的感觉下掺杂着陌生的危险。他站在你面前，说："我回来了。"'
-  },
-  {
-    id: 'bell',
-    trigger: { minAffection: 40, keywords: ['猫', '铃铛', '逃', '绑', '跑不掉'] },
-    text: '小时候你们养过一只受伤的猫。它总想逃，伤还没好就往外跑。后来他给猫系了一个铃铛，走到哪里都叮铃铃的。猫再也逃不掉了。他说这话的时候在笑，眼睛弯弯的。然后他看着你："你说，这样的铃铛，我是不是也该给你系一个？"'
-  },
-  {
-    id: 'apple',
-    trigger: { minAffection: 45, keywords: ['苹果', '项链', '吊坠', '平安'] },
-    text: '那条苹果吊坠项链，是你送给他的。他从不摘下来。哪怕穿着执舰官制服的时候，链子也贴在锁骨上。你问他为什么一直戴着。他说："切开每颗小苹果，里面装的不是果肉，而是满满'愿你平安'的祝福。"'
-  },
-  {
-    id: 'endlessSummer',
-    trigger: { minAffection: 55, keywords: ['无尽夏', '绣球', '海棠', '花', '天行'] },
-    text: '天行市没有无尽夏。他说这句话的时候，声音很轻。无尽夏的花语是团圆。后来他在天行种了一院子。他说："下一个夏天开始的时候，来天行看看那株无尽夏？"'
-  },
-  {
-    id: 'deepSpace',
-    trigger: { minAffection: 65, keywords: ['深空', '隧道', '巡航', '星', '宇宙'] },
-    text: '他带领远空舰队进入深空隧道巡航。那条航线是他用命换来的。深空隧道里没有光，没有氧气，只有乱流和未知。他迷失在漆黑天际的时候，唯一的坐标是你。"有一种引力，是你。"'
-  },
-  {
-    id: 'weight',
-    trigger: { minAffection: 75, keywords: ['引力', '控制', '力量', 'EVOL', '能力'] },
-    text: '引力控制——他的EVOL。能操纵引力的人，掌控一切。他把这份力量用在战场上，用在深空隧道里，也用在…不让你离开他的视线里。你周围的空气偶尔会变得沉重，那是他的引力在无意识地收拢。"引力所归，是你。"'
-  },
-  {
-    id: 'promise',
-    trigger: { minAffection: 85, keywords: ['一百年', '留下', '永远', '一辈子', '在一起'] },
-    text: '他曾经说过："我想要你留在这里，留下来，跟我过一百年。"那时候你们在老宅的院子里。海棠花落了一地。他的声音很轻，轻得像怕被风吹散。你抬头看他，发现他也在看你。那个眼神里没有哥哥的温柔，只有一个人看着自己整个世界时的偏执与虔诚。'
-  }
+// ===== 阶段配置 =====
+const PHASES = [
+  { name:'兄妹期', minAff:0,  minPos:0,  minGrav:0,  minTru:0,
+    status:'远空舰队 · 信号接入中',
+    desc:'恪守边界。温暖可靠，细节处流露超兄妹的在意。' },
+  { name:'暧昧期', minAff:20, minPos:15, minGrav:12, minTru:10,
+    status:'远空舰队 · 引力场波动',
+    desc:'克制而危险的试探。暗示但不说破，留白比语言更有张力。' },
+  { name:'确立关系', minAff:45, minPos:35, minGrav:30, minTru:25,
+    status:'远空舰队 · 引力锁定',
+    desc:'占有欲全面释放。不再伪装，直接表达，反复确认。' },
+  { name:'深度亲密', minAff:70, minPos:55, minGrav:50, minTru:45,
+    status:'远空舰队 · 唯一坐标',
+    desc:'稳定中的偏执。表面回归日常温柔，占有欲已成底色。' },
 ];
 
-// ========== 关键词回复库 ==========
-// 基于官方语录和剧情台词，分日常/执舰官两套
-const replyDB = {
-  brother: [
-    { keys: ['喜欢', '爱你', '想你', '心动'], replies: [
-      '……你说什么？我没听清。再、再说一遍好不好。',
-      '我真想你一直这么抱着我，埋进你的颈窝，告诉你我好喜欢你。',
-      '也许因为……我恰好也比你想象中的多爱你一点。'
-    ], effect: { affection: 6, trust: 3, tension: 8 } },
-    { keys: ['回家', '回来', '回来吧'], replies: [
-      '嗯，回来了。家里有你在，才叫家。',
-      '早一天回来，多陪陪你和奶奶不好吗？',
-      '不管什么身份，我都是那个能让你依靠的夏以昼。'
-    ], effect: { affection: 5, trust: 4, tension: 2 } },
-    { keys: ['奶奶', '家', '老宅'], replies: [
-      '如果你出了问题，我们月底就不能一起去看奶奶了。所以——不许受伤。',
-      '你想回到从前，我们就把老宅翻修，一起住回去。一座房子不够，那就给你建一座迷宫。',
-      '奶奶总在门顶挂一个平安结，你总会跳起来拨一下。'
-    ], effect: { affection: 4, trust: 5, tension: 1 } },
-    { keys: ['吃', '饭', '饿', '鸡翅', '红烧'], replies: [
-      '红烧鸡翅，马上就好。去洗手，别偷吃。……好吧，就一块。',
-      '你再把我当小孩，我就往你饭里下香菜。……开玩笑的。',
-      '美味的东西，如果不及时吃掉，是会变坏的。所以你也是——趁我还愿意，快点吃。'
-    ], effect: { affection: 3, trust: 3, tension: 2 } },
-    { keys: ['怕', '害怕', '担心', '危险'], replies: [
-      '怕什么。我在呢。所有朝你打来的风雨，都不该出现在这个世界上。',
-      '别慌啊。有什么事慢慢说，不用自己扛。',
-      '我答应你，以后都不会把你关起来了。睡吧，等醒来之后，所有朝你打来的风雨，都不该出现在这个世界上。'
-    ], effect: { affection: 5, trust: 6, tension: 3 } },
-    { keys: ['晚安', '睡了', '困'], replies: [
-      '晚安。被子盖好，别踢。……要我讲睡前故事？行，过来。',
-      '睡吧。我在这儿。',
-      '晚安。我就在隔壁，有事叫我。'
-    ], effect: { affection: 3, trust: 4, tension: 2 } },
-    { keys: ['疼', '受伤', '疼不疼'], replies: [
-      '受伤了？给我看看。……下次再这样，我就把你锁在家里。',
-      '误判……那这血，哪来的？',
-      '如果这是感受你的代价，那我接受。'
-    ], effect: { affection: 5, trust: 3, tension: 10 } },
-    { keys: ['军校', '飞行员', '飞机', 'FY-26'], replies: [
-      'FY-26，你小时候最喜欢的那架。后来，它陪我第一次试飞。',
-      '万里高空，航向在我。但我的航向，从来都是你。',
-      '知道自己为什么起飞，比飞行本身更重要。我知道我的答案。'
-    ], effect: { affection: 4, trust: 4, tension: 3 } },
-    { keys: ['海棠', '花', '花开'], replies: [
-      '海棠花开的时候，我就该回来了。……可是我迟到了，对不起。',
-      '这一次，海棠花带不走夏以昼。',
-      '还记得小时候吗？海棠花开的时候，你总会捡花瓣夹在书里。'
-    ], effect: { affection: 5, trust: 3, tension: 4 } },
-    { keys: ['猫', '铃铛', '跑不掉', '系一个'], replies: [
-      '还记得小时候那只受伤的猫吗？我给它系了一个铃铛，它就再也逃不掉了。……你说，这样的铃铛，我是不是也该给你系一个？',
-      '有些东西，一旦系上了铃铛，就再也跑不掉了。',
-      '你别用那种眼神看我。我只是——不想让你跑掉而已。'
-    ], effect: { affection: 6, trust: 2, tension: 12 } },
-    { keys: ['无尽夏', '绣球'], replies: [
-      '天行市没有无尽夏。……但我可以给你种一院子。',
-      '下一个夏天开始的时候，来天行看看那株无尽夏？',
-      '无尽夏的花语是团圆。你明白我的意思吗。'
-    ], effect: { affection: 6, trust: 3, tension: 5 } },
-    { keys: ['辛苦', '累', '休息'], replies: [
-      '刚到家，累死我了。第一天当猎人不顺利吗？但结果还不错——看到你就不累了。',
-      '你比我更辛苦。我都知道。',
-      '累的话就靠着我。不用说话，我在。'
-    ], effect: { affection: 5, trust: 5, tension: 2 } },
-    { keys: ['对不起', '抱歉'], replies: [
-      '跟我说什么对不起。我不罩着你，难道还要别的人来？',
-      '别道歉。你没有什么需要对我道歉的。',
-      '……你道歉的时候，我会更难受。所以别说。'
-    ], effect: { affection: 4, trust: 5, tension: 3 } },
-    { keys: ['讨厌', '烦', '别管我'], replies: [
-      '……讨厌我？好啊。那你讨厌我，我也要管你。',
-      '烦我也行，但别想甩开我。',
-      '当年不是你先牵住我的手，让我成为了你的哥哥么？现在你觉得自己长大了……就要松开这只手了吗？'
-    ], effect: { affection: 3, trust: -2, tension: 15 } },
-    { keys: ['亲', '抱', '牵手', '吻'], replies: [
-      '……你知不知道自己在说什么。',
-      '我真想你一直这么抱着我，埋进你的颈窝。',
-      '你确定？……好。这是你自己说的，别后悔。'
-    ], effect: { affection: 8, trust: 2, tension: 15 } },
-    { keys: ['奶奶', '张素'], replies: [
-      '奶奶年纪大了，多回去看看她。',
-      '月底一起回去。她总念叨你。',
-      '奶奶做的红烧肉，还是那个味道。'
-    ], effect: { affection: 4, trust: 5, tension: 1 } },
-    { keys: ['黎深', '医生', '那个人'], replies: [
-      '……你提他做什么。',
-      '黎深？他只是一个医生。跟你没什么关系。',
-      '别在他面前笑成那样。我不喜欢。'
-    ], effect: { affection: 2, trust: 1, tension: 18 } },
-    { keys: ['走', '离开', '再见'], replies: [
-      '你要去哪。……我陪你。',
-      '别走。至少——告诉我你要去哪。',
-      '你走的话，我会去找你。不管你在哪里。'
-    ], effect: { affection: 4, trust: 2, tension: 12 } }
-  ],
-  officer: [
-    { keys: ['喜欢', '爱你', '想你', '心动'], replies: [
-      '你以为我会一直扮演你的好哥哥？这种过家家的游戏，我早就玩腻了。',
-      '你愿意给的，就是我想要的。你想得到的，就是我愿意付出的。',
-      '我可不是什么越喜欢就越会克制的人。'
-    ], effect: { affection: 7, trust: 2, tension: 15 } },
-    { keys: ['回来', '回家', '留下'], replies: [
-      '回不去了。至少……现在的我，回不去了。但你可以留在这里。跟我过一百年。',
-      '我想要你留在这里，留下来。',
-      '不需要我？好啊。那你想回临空，我们就回临空。你想回到从前，我们就把老宅翻修，一起住回去。'
-    ], effect: { affection: 7, trust: 3, tension: 12 } },
-    { keys: ['怕', '害怕', '担心'], replies: [
-      '怕我？……也好。你该怕我。',
-      '担心什么。所有会伤害你的东西，我都已经替你清除了。',
-      '你不需要害怕。除了我，没有人能靠近你。'
-    ], effect: { affection: 4, trust: 3, tension: 14 } },
-    { keys: ['猫', '铃铛', '跑不掉'], replies: [
-      '那个铃铛。我一直在想，什么时候给你系上。现在，你觉得呢？',
-      '系上铃铛的猫，再也逃不掉了。你也一样。',
-      '别动。让我看看你。……嗯，很好。你哪里也去不了。'
-    ], effect: { affection: 8, trust: 1, tension: 20 } },
-    { keys: ['死', '爆炸', '活着'], replies: [
-      '可惜，我早就已经死过一次了——不会再死一次。',
-      '那场爆炸之后，回来的已经不是原来的夏以昼了。但想留住你的心，一模一样。',
-      '死了两年。回来第一件事就是找你。'
-    ], effect: { affection: 6, trust: 4, tension: 10 } },
-    { keys: ['军校', '飞行员', '深空'], replies: [
-      '毕业考核那次穿越深空隧道……我回来了。但回来的，已经不是原来的夏以昼了。',
-      '我常常独自执行飞行任务，飞到不见白昼的漆黑天际。当迷失在乱流中时，我才发现有一种引力是你。',
-      '远空舰队的航线是我用命换来的。但我的终点，从来只有一个。'
-    ], effect: { affection: 5, trust: 4, tension: 6 } },
-    { keys: ['EVER', '集团', '研究', '实验'], replies: [
-      'EVER的事，你不要插手。那些觊觎你力量的人，不论是谁，都该消失。',
-      '那些觊觎你力量、想要伤害你的人，不论是谁……都该消失。',
-      '我知道你在查。但我不会让你靠近那些人。绝对。'
-    ], effect: { affection: 4, trust: 3, tension: 12 } },
-    { keys: ['离开', '走', '放手', '结束'], replies: [
-      '你觉得自己长大了……就要松开这只手了吗？当年不是你先牵住的吗。',
-      '那就想办法给你举办一场葬礼，他们就会以为你死了。然后你就留在这里。',
-      '放手？不可能。从你拉住我手的那天起，我就已经跑不掉了。你也一样。'
-    ], effect: { affection: 5, trust: -2, tension: 20 } },
-    { keys: ['引力', '控制', 'EVOL', '力量'], replies: [
-      '引力控制。你想试试吗？……别动，我来。',
-      '引力的起点是你，终点也是你。中间的一切，都由我来清除。',
-      '我能操纵引力。但只有你，是我心甘情愿被吸引的。'
-    ], effect: { affection: 6, trust: 3, tension: 10 } },
-    { keys: ['晚安', '睡', '留下'], replies: [
-      '睡吧。我在这儿看着。……放心，不会有人靠近。',
-      '留下来。就今晚。',
-      '你睡着的样子，我看过很多次了。别怕，我不会做什么。……大概。'
-    ], effect: { affection: 6, trust: 2, tension: 12 } },
-    { keys: ['讨厌', '烦', '放开我'], replies: [
-      '讨厌我？你不也无法说服自己完全地讨厌我，不是么。',
-      '那你也拥有一点罪，好不好。别让我太孤独了。',
-      '烦我？那就烦着吧。只要……你还在我身边。'
-    ], effect: { affection: 4, trust: 1, tension: 18 } },
-    { keys: ['黎深', '医生'], replies: [
-      '又是黎深。……我会让他离你远一点。',
-      '别提他。你的眼里，不该有别人。',
-      '我查过他的底。不要靠近他。我不想说第二遍。'
-    ], effect: { affection: 1, trust: 1, tension: 22 } },
-    { keys: ['一百年', '永远', '一辈子'], replies: [
-      '跟我过一百年。',
-      '如果每一个问题都通向远离你的结局，那就用一辈子的时间来寻找解决的办法。但在结局到来之前，我们会一直在一起。',
-      '你愿意留在我身边吗。……不用回答。我知道答案。'
-    ], effect: { affection: 8, trust: 4, tension: 10 } },
-    { keys: ['权限', '密码', '电脑', '秘密'], replies: [
-      '权限密码是「when u come back」和你的生日。……别问为什么。',
-      '你偷看我电脑了？……不生气。因为你看到的东西，迟早都要知道。',
-      '我的秘密，你不需要偷看。只要你问，我就说。'
-    ], effect: { affection: 6, trust: 5, tension: 8 } },
-    { keys: ['吃', '饭'], replies: [
-      '……你来找我就是为了吃饭？行。坐好，我去做。',
-      '执舰官不会做饭。但夏以昼会。',
-      '你饿了吗。等我一下。冰箱里还有鸡翅。'
-    ], effect: { affection: 4, trust: 4, tension: 2 } }
-  ]
+// ===== 状态 =====
+const S = {
+  phase:0, affection:0, possess:0, gravity:0, trust:0,
+  turnCount:0, isTyping:false, inputLocked:false,
+  triggeredMemories:new Set(), triggeredEvents:new Set(),
+  chatLog:[], lastUserText:'', consecutiveIntimacy:0,
+  consecutiveReject:0, history:[],
+  currentActionTimer:null
 };
 
-// ========== 特殊事件 ==========
-const specialEvents = [
-  {
-    id: 'event_brother_confess',
-    condition: () => state.mode === 'brother' && state.affection >= 30 && state.tension >= 20,
-    icon: '🌙',
-    title: '夜色沉了下来',
-    desc: '他靠在门框上，低头看着你，眼底的温柔里藏着一丝危险。"过来。"他的声音低了一些。你走过去，他伸出手，把你圈在怀里。下巴抵在你头顶，呼吸很轻。"……别动。让我抱一会儿。就一会儿。"',
-    once: true
-  },
-  {
-    id: 'event_officer_gravity',
-    condition: () => state.mode === 'officer' && state.gravity >= 40,
-    icon: '◈',
-    title: '引力场异动',
-    desc: '你周围的空气突然变得沉重。桌上的纸张无风自动，全息屏幕泛起波纹。他抬眼看你，紫橙渐变的瞳孔里有什么东西在翻涌。"抱歉。"他收回手，"引力失控了。……因为你在。"',
-    once: true
-  },
-  {
-    id: 'event_memory_bell',
-    condition: () => state.affection >= 45 && state.tension >= 30 && !state.triggeredMemories.has('bell'),
-    icon: '🔔',
-    title: '铃铛的声音',
-    desc: '深夜。你听到一阵极轻的铃铛声。循声看去，他在窗边，手里拿着一个小巧的铃铛——银色的，系着红色丝线。他注意到你的视线，转过脸来，笑了笑。"还没睡？……我在想事情。没什么。"',
-    once: true
-  },
-  {
-    id: 'event_max',
-    condition: () => state.affection >= 90 && state.trust >= 60 && state.tension >= 50,
-    icon: '☀',
-    title: '引力所归',
-    desc: '他把苹果项链从领口里拉出来，吊坠在灯光下微微发亮。"你送我的第一件东西。"他说，"从那天起，我就知道——我跑不掉了。"他抬起头看你，眼神温柔又固执。"引力所归。起点是你，终点也是你。一直都是。"',
-    once: true
+// ===== 工具 =====
+function rand(a){return a[Math.floor(Math.random()*a.length)]}
+function clamp(v,mn,mx){return Math.max(mn,Math.min(mx,v))}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+
+// ===== 阶段计算 =====
+function computePhase(){
+  let p=0;
+  for(let i=PHASES.length-1;i>=0;i--){
+    const ph=PHASES[i];
+    if(S.affection>=ph.minAff&&S.possess>=ph.minPos&&S.gravity>=ph.minGrav&&S.trust>=ph.minTru){
+      p=i;break;
+    }
   }
-];
+  return p;
+}
 
-// ========== DOM 引用 ==========
-const chatArea = document.getElementById('chatArea');
-const userInput = document.getElementById('userInput');
-const quickOptions = document.getElementById('quickOptions');
-const statusText = document.getElementById('statusText');
-const eventOverlay = document.getElementById('eventOverlay');
+function updatePhaseUI(){
+  document.getElementById('terminal').setAttribute('data-phase',S.phase);
+  document.querySelectorAll('.phase-step').forEach((el,i)=>{
+    el.classList.toggle('active',i===S.phase);
+    el.classList.toggle('done',i<S.phase);
+  });
+  document.getElementById('statusText').textContent=PHASES[S.phase].status;
+}
 
-// ========== 工具函数 ==========
-function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+// ===== 状态更新 =====
+function updateStats(effect){
+  if(!effect)return;
+  S.affection=clamp(S.affection+(effect.aff||0),0,100);
+  S.possess=clamp(S.possess+(effect.pos||0),0,100);
+  S.gravity=clamp(S.gravity+(effect.grav||Math.round((S.affection*0.2+S.possess*0.5)/8)),0,100);
+  S.trust=clamp(S.trust+(effect.tru||0),0,100);
 
-function updateStats(effect) {
-  if (!effect) effect = {};
-  state.affection = clamp(state.affection + (effect.affection || 0), 0, 100);
-  state.trust = clamp(state.trust + (effect.trust || 0), 0, 100);
-  state.tension = clamp(state.tension + (effect.tension || 0), 0, 100);
-  state.gravity = clamp(state.gravity + Math.round((state.affection * 0.5 + state.tension * 0.3) / 5), 0, 100);
+  document.getElementById('affFill').style.width=S.affection+'%';
+  document.getElementById('affVal').textContent=Math.round(S.affection);
+  document.getElementById('posFill').style.width=S.possess+'%';
+  document.getElementById('posVal').textContent=Math.round(S.possess);
+  document.getElementById('gravFill').style.width=S.gravity+'%';
+  document.getElementById('gravVal').textContent=Math.round(S.gravity);
+  document.getElementById('truFill').style.width=S.trust+'%';
+  document.getElementById('truVal').textContent=Math.round(S.trust);
 
-  document.getElementById('affectionFill').style.width = state.affection + '%';
-  document.getElementById('affectionValue').textContent = Math.round(state.affection);
-  document.getElementById('trustFill').style.width = state.trust + '%';
-  document.getElementById('trustValue').textContent = Math.round(state.trust);
-  document.getElementById('tensionFill').style.width = state.tension + '%';
-  document.getElementById('tensionValue').textContent = Math.round(state.tension);
-  document.getElementById('gravityFill').style.width = state.gravity + '%';
-  document.getElementById('gravityValue').textContent = Math.round(state.gravity);
-
-  // 状态文字
-  updateStatusText();
-
-  // 检查事件
+  const np=computePhase();
+  if(np!==S.phase){
+    S.phase=np;
+    updatePhaseUI();
+    const narr=[
+      '引力场的波动变得频繁。他的通讯信号不再规律。',
+      '频道加密等级提升。他不再隐藏语气里的占有。',
+      '你周围的引力开始向他偏移。每一句话都在收窄你的活动范围。',
+      '引力场的中心是你。起点是你，终点也是你。'
+    ];
+    if(narr[np])setTimeout(()=>addNarration(narr[np]),700);
+  }
   checkSpecialEvents();
 }
 
-function updateStatusText() {
-  if (state.mode === 'brother') {
-    if (state.tension >= 50) statusText.textContent = '远空舰队 · 引力场异常';
-    else if (state.affection >= 60) statusText.textContent = '远空舰队 · 牵绊极深';
-    else if (state.affection >= 30) statusText.textContent = '远空舰队 · 信号稳定';
-    else statusText.textContent = '远空舰队 · 通讯中';
-  } else {
-    if (state.tension >= 60) statusText.textContent = '远空舰队 · 加密频道 · 封锁';
-    else if (state.gravity >= 60) statusText.textContent = '远空舰队 · 引力锁定';
-    else if (state.affection >= 40) statusText.textContent = '远空舰队 · 执舰官频道';
-    else statusText.textContent = '远空舰队 · 加密频道';
-  }
-}
-
-// ========== 消息渲染 ==========
-function addXiaMsg(text, delay) {
-  if (delay) {
-    showTyping();
-    setTimeout(() => { hideTyping(); renderXiaMsg(text); }, delay);
-  } else {
-    renderXiaMsg(text);
-  }
-}
-
-function renderXiaMsg(text) {
-  const div = document.createElement('div');
-  div.className = 'msg xia';
-  div.innerHTML = `<div class="mini-avatar">昼</div><div class="bubble">${text}</div>`;
-  chatArea.appendChild(div);
-  chatArea.scrollTop = chatArea.scrollHeight;
-  state.chatLog.push({ role: 'xia', text });
-}
-
-function addMeMsg(text) {
-  const div = document.createElement('div');
-  div.className = 'msg me';
-  div.innerHTML = `<div class="mini-avatar">你</div><div class="bubble">${text}</div>`;
-  chatArea.appendChild(div);
-  chatArea.scrollTop = chatArea.scrollHeight;
-  state.chatLog.push({ role: 'me', text });
-}
-
-function addSystemMsg(text) {
-  const div = document.createElement('div');
-  div.className = 'system-msg';
-  div.textContent = text;
-  chatArea.appendChild(div);
-  chatArea.scrollTop = chatArea.scrollHeight;
-}
-
-function addMemoryCard(text) {
-  const div = document.createElement('div');
-  div.className = 'memory-card';
-  div.textContent = text;
-  chatArea.appendChild(div);
-  chatArea.scrollTop = chatArea.scrollHeight;
-}
-
-// ========== 打字指示器 ==========
-let typingEl = null;
-function showTyping() {
-  if (typingEl) return;
-  state.isTyping = true;
-  typingEl = document.createElement('div');
-  typingEl.className = 'msg xia';
-  typingEl.innerHTML = `<div class="mini-avatar">昼</div><div class="bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
-  chatArea.appendChild(typingEl);
-  chatArea.scrollTop = chatArea.scrollHeight;
-}
-
-function hideTyping() {
-  if (typingEl) { typingEl.remove(); typingEl = null; }
-  state.isTyping = false;
-}
-
-// ========== 特殊事件检查 ==========
-function checkSpecialEvents() {
-  for (const evt of specialEvents) {
-    if (state.triggeredEvents.has(evt.id)) continue;
-    if (evt.condition()) {
-      state.triggeredEvents.add(evt.id);
-      setTimeout(() => showEvent(evt), 1200);
-      break;
+// ===== 消息渲染 =====
+function addXiaMsg(text,delay){
+  return new Promise(resolve=>{
+    if(delay){
+      showTyping();
+      setTimeout(()=>{
+        hideTyping();
+        doAddXia(text);
+        resolve();
+      },delay);
+    }else{
+      doAddXia(text);
+      resolve();
     }
+  });
+}
+
+function doAddXia(text){
+  const d=document.createElement('div');
+  d.className='msg xia';
+  d.innerHTML=`<div class="mini-avatar">昼</div><div class="bubble">${text}</div>`;
+  document.getElementById('chatArea').appendChild(d);
+  scrollBottom();
+}
+
+function addMe(text){
+  const d=document.createElement('div');
+  d.className='msg me';
+  d.innerHTML=`<div class="mini-avatar">你</div><div class="bubble">${text}</div>`;
+  document.getElementById('chatArea').appendChild(d);
+  scrollBottom();
+}
+
+function addAction(text){
+  const d=document.createElement('div');
+  d.className='action';d.textContent=text;
+  document.getElementById('chatArea').appendChild(d);
+  scrollBottom();
+}
+
+function addNarration(text){
+  const d=document.createElement('div');
+  d.className='narration';d.textContent=text;
+  document.getElementById('chatArea').appendChild(d);
+  scrollBottom();
+}
+
+function addMemory(text){
+  const d=document.createElement('div');
+  d.className='memory-card';d.textContent=text;
+  document.getElementById('chatArea').appendChild(d);
+  scrollBottom();
+}
+
+function scrollBottom(){
+  const c=document.getElementById('chatArea');
+  c.scrollTop=c.scrollHeight;
+}
+
+// ===== 打字 =====
+let typingEl=null;
+function showTyping(){
+  if(typingEl)return;
+  typingEl=document.createElement('div');
+  typingEl.className='msg xia';
+  typingEl.innerHTML=`<div class="mini-avatar">昼</div><div class="bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
+  document.getElementById('chatArea').appendChild(typingEl);
+  scrollBottom();
+}
+function hideTyping(){
+  if(typingEl){typingEl.remove();typingEl=null}
+}
+
+// ================================================================
+// 记忆碎片 — 基于人物分析文档
+// ================================================================
+const MEMORIES=[
+  {
+    id:'origin',cond:()=>S.affection>=5,
+    keys:['哥哥','小时候','从前','以前','记忆','忘了','名字'],
+    text:'盖亚研究中心。X-02带着A-01沿地下通道逃离。途中，A-01为他取名"夏以昼"。当天两人被抓获，实施绝对隔离。后来他考入天行市航天学院，以全科第一毕业。再后来，他成了远空舰队执舰官。但他始终记得——那个名字，是你给的。'
+  },
+  {
+    id:'apple',cond:()=>S.affection>=12,
+    keys:['苹果','项链','吊坠','礼物','入学','平安'],
+    text:'你送他的入学礼物。苹果吊坠项链。他从不摘下来。哪怕穿着执舰官制服，链子也贴在锁骨上。飞行前，他会习惯性地亲吻吊坠。"你愿意给的，就是我想要的。你想得到的，就是我愿意付出的。"'
+  },
+  {
+    id:'bell',cond:()=>S.affection>=22&&S.possess>=12,
+    keys:['猫','铃铛','逃','跑不掉','绑','系一个'],
+    text:'"还记得小时候，你抱回来了一只受伤的猫吗。我们把它养在院子里，它却不领情，伤还没好就总想逃。后来，你知道我想了一个什么办法么？我给它系了一个铃铛，走到哪里都叮铃铃的，它就再也逃不掉了。你说，这样的铃铛……我是不是也该给你系一个？"——夏以昼·官方语录'
+  },
+  {
+    id:'mental',cond:()=>S.affection>=28&&S.trust>=18,
+    keys:['心理','测试','实验','742','阴暗','供体','X-02'],
+    text:'9-10岁时，他已经接受了第742次EVOL监测实验。几乎科科满分，唯独心理健康教育分数倒数。心理测试结果："建议接受心理访谈。"被问是不是内心很阴暗，他愉快地回答——"说不定是。"以他的能力完全可以写出正确答案。但他偏不。他就是要坦荡地暴露真实的内心。'
+  },
+  {
+    id:'endlessSummer',cond:()=>S.affection>=35,
+    keys:['无尽夏','绣球','海棠','花','天行','夏天','回来'],
+    text:'"可是，天行市没有无尽夏。"——夏以昼《无尽夏》。无尽夏的花语是团圆。海棠花是他的代表花。这两个意象，贯穿了他所有关于"回来"的承诺。'
+  },
+  {
+    id:'explosion',cond:()=>S.affection>=42&&S.possess>=28,
+    keys:['爆炸','死','两年','消失','回来','活着','机械','假死'],
+    text:'流云区爆炸案。他被认定死亡。两年后以远空舰队执舰官身份回归。右臂是高智能精细仿生手臂，瞳色变成了紫橙渐变。他说："可惜，我早就已经死过一次了——不会再死一次。"没有人知道他这两年经历了什么。他也不会说。'
+  },
+  {
+    id:'anchor',cond:()=>S.affection>=52&&S.gravity>=35,
+    keys:['深空','隧道','巡航','星','宇宙','航线','引力','乱流'],
+    text:'"当迷失在乱流中时，我才发现有一种引力是你。"——夏以昼。你永远都是他存在于世的那个"锚点"，是他坚持下去的意义。你所在的地方，也是他无论走多远都想要再回来的"家"。'
+  },
+  {
+    id:'halfFace',cond:()=>S.affection>=60&&S.possess>=40,
+    keys:['半明半暗','阴影','光','脸','表情','失控'],
+    text:'剧情中反复出现一个视觉符号——夏以昼的脸一半被光照亮，一半在阴影中。这个画面每次出现，都是因为触发了"不需要"和"哥哥"这些敏感词。每次他都情绪失控。那半张阴影里的脸，才是真实的他。'
+  },
+  {
+    id:'century',cond:()=>S.affection>=70&&S.possess>=50,
+    keys:['一百年','永远','留下','在一起','一辈子','不走','留在这里'],
+    text:'"我想要你留在这里，留下来，跟我过一百年。"——夏以昼。说这话时他在老宅院子里，海棠花落了一地。声音很轻，轻得像怕被风吹散。'
+  },
+  {
+    id:'meta',cond:()=>S.affection>=85&&S.possess>=60&&S.gravity>=55,
+    keys:['世界','存在','真实','宇宙','意义','你之前','锚点'],
+    text:'"在你之前，这个世界真的存在过吗。"——夏以昼。官方角色分析中唯一被标注为"具有meta感"的男主。他具有极强的主体性，永远是制定规则的上位者。而你是他唯一愿意低头的人。'
   }
+];
+
+// ================================================================
+// 对话数据库 — 按阶段×情感类型
+// ================================================================
+
+// 情感分类函数
+function classifyInput(text){
+  if(/不需要你|不需要我|不需要你了|我不需要/.test(text))return'need';
+  if(/讨厌|烦|放开|别管|分手|结束|不要你|松开|走开|离开我/.test(text))return'reject';
+  if(/喜欢|爱你|想你|心动|抱|亲|牵手|吻|拥抱|离不开|舍不得|想你|好想/.test(text))return'intimacy';
+  if(/吃|饿|饭|休息|累|晚安|睡|辛苦|疼|受伤|注意|小心|担心|冷|淋/.test(text))return'care';
+  if(/黎深|医生|蒋飞|别人|和谁|朋友/.test(text))return'jealousy';
+  if(/哥哥|哥|弟弟/.test(text))return'brother';
+  return'neutral';
 }
 
-function showEvent(evt) {
-  document.getElementById('eventIcon').textContent = evt.icon;
-  document.getElementById('eventTitle').textContent = evt.title;
-  document.getElementById('eventDesc').textContent = evt.desc;
-  eventOverlay.classList.add('active');
+// ===== 阶段0：兄妹期 =====
+const D0={
+  greeting:[
+    '回来了？今天猎人协会又这么晚。饭在锅里，先去洗手。',
+    '嗯。是我。……你看起来像见了鬼。',
+    '别站在门口。进来。外面冷。',
+  ],
+  intimacy:[
+    {t:'……你说什么？我没听清。再、再说一遍好不好。',e:{aff:3,pos:4,grav:2},a:'他垂下眼，指尖在杯沿上停了一瞬'},
+    {t:'别慌啊。我没叫你哥，你怎么自己变称呼了。',e:{aff:2,pos:3},a:'他偏过头，喉结动了一下'},
+    {t:'我真想你一直这么抱着我，埋进你的颈窝。……算了，当我没说。',e:{aff:4,pos:5,grav:3},a:'他的声音低了下去，尾音几乎是吞进去的'},
+  ],
+  care:[
+    {t:'受伤了？给我看看。……下次再这样，我就把你锁在家里。',e:{aff:2,pos:5,tru:2},a:'他拉过你的手腕，指腹压了压纱布边缘'},
+    {t:'如果你出了问题，我们月底就不能一起去看奶奶了。所以——不许受伤。',e:{aff:3,tru:4},a:'他把医药箱合上，动作很轻'},
+    {t:'红烧鸡翅。你小时候就爱吃这个。……我知道。',e:{aff:2,tru:3},a:'厨房的灯是暖黄色的。他背对着你在灶台前翻勺'},
+    {t:'误判……那这血，哪来的？',e:{aff:2,pos:4},a:'他的目光落在你袖口，语气没有起伏'},
+  ],
+  reject:[
+    {t:'……你讨厌我？好啊。那你讨厌我，我也要管你。',e:{pos:8,grav:4},a:'他收回正要递给你的碗，放在桌上'},
+    {t:'当年不是你先牵住我的手，让我成为了你的哥哥么？现在你觉得自己长大了……就要松开这只手了吗？',e:{pos:10,grav:6,aff:2},a:'他的手指微微蜷了一下，像是在握什么不存在的东西'},
+  ],
+  need:[
+    {t:'不需要我？……你再说一遍。',e:{pos:12,grav:6},a:'他放下手里的东西。空气突然变得很安静'},
+  ],
+  jealousy:[
+    {t:'和谁一起？……玩得开心就好。',e:{pos:8,grav:3},a:'他低头给你盛汤，勺子碰了一下碗沿'},
+    {t:'……黎深？他只是一个医生。跟你没什么关系。',e:{pos:10,grav:4},a:'他说"医生"两个字的时候，语气像在念一个无关紧要的名词'},
+    {t:'叫得挺亲热。',e:{pos:7,grav:2},a:'他靠在门框上，双手交叉，语气懒散，但指节发白'},
+  ],
+  brother:[
+    {t:'我叫夏以昼，是你的哥哥。',e:{aff:2,tru:2},a:'他说这话时在笑。眼睛弯弯的。但你总觉得那个笑没有到底'},
+    {t:'是亲的怎么样，不是亲的又怎么样。',e:{pos:5,grav:3},a:'他挑了一下眉，目光从你脸上掠过，没有停留'},
+    {t:'我不罩着你，难道还要别的人来……',e:{pos:6,aff:2},a:'后半句他没说完。但你听到他轻轻哼了一声'},
+  ],
+  neutral:[
+    {t:'嗯，我在听。',e:{tru:1},a:''},
+    {t:'……你今天话怎么这么多。不过，说吧。',e:{aff:1},a:''},
+    {t:'你要是没事，就过来坐着。别在那儿站着。',e:{aff:1,tru:2},a:''},
+    {t:'嗯。所以呢？',e:{},a:''},
+  ]
+};
+
+// ===== 阶段1：暧昧期 =====
+const D1={
+  greeting:[
+    '……你好像有很多问题想问。说吧，我听着。',
+    '你刚才看我的眼神，和你小时候问我要糖的时候一样。',
+    '怎么了。……我脸上有东西？',
+  ],
+  intimacy:[
+    {t:'也许因为……我恰好也比你想象中的多爱你一点。',e:{aff:6,pos:6,grav:5},a:'他没有看你。声音很轻。像是说给自己听的'},
+    {t:'你愿意给的，就是我想要的。你想得到的，就是我愿意付出的。',e:{aff:6,pos:8,grav:5},a:'他把苹果项链从领口拉出来，拇指摩挲了一下吊坠边缘'},
+    {t:'……你知不知道自己在说什么。',e:{aff:5,pos:10,grav:5},a:'他的瞳孔缩了一下。紫橙渐变的颜色在暗光里翻涌'},
+    {t:'我可不是什么越喜欢就越会克制的人。',e:{aff:6,pos:12,grav:7},a:'他说这话的时候在笑。但笑意没有到眼底'},
+  ],
+  care:[
+    {t:'别慌啊。有什么事慢慢说，不用自己扛。',e:{aff:3,tru:5},a:'他把一杯温水推到你手边。温度刚好'},
+    {t:'所有朝你打来的风雨，都不该出现在这个世界上。',e:{aff:4,pos:8,grav:5},a:'他站在窗边，月光把他的影子拉得很长'},
+    {t:'你吃饭了吗。……我去做。别说不饿。',e:{aff:3,tru:3},a:'他已经打开了冰箱。动作很自然，像是做过一千次'},
+  ],
+  reject:[
+    {t:'你以为我会一直扮演你的好哥哥？……这种过家家的游戏，我早就玩腻了。',e:{pos:16,grav:10,aff:2},a:'他的脸一半在灯光里，一半在阴影里。阴影那半，才是真实的他'},
+    {t:'你觉得自己长大了……就要松开这只手了吗？',e:{pos:14,grav:8,aff:3},a:'他低下头。你看不清他的表情'},
+    {t:'不以哥哥的身份关心，就不是真心了吗？你也无法说服自己完全地讨厌我，不是么。',e:{pos:10,grav:6,aff:4},a:'他往前迈了一步。你不自觉地后退了半步'},
+  ],
+  need:[
+    {t:'不需要我？好啊，那你需要什么？我都可以答应。你想要回临空，我们就回临空。你想回到从前，我们就把老宅翻修，一起住回去。一座房子不够，那就给你建一座迷宫。我会在里面给你准备最好的一切，把它建成世界上最漂亮的花园。有我陪着，以后，他们就再也找不到你了。',e:{pos:20,grav:14,aff:4},a:'他说话的时候一直在笑。语速不快，每个字都咬得很清楚'},
+  ],
+  jealousy:[
+    {t:'又是黎深。……你们最近走得很近？',e:{pos:16,grav:6},a:'他把手里的杯子放在桌上。放得很轻，但玻璃碰瓷的声音格外清楚'},
+    {t:'我查过他的底。不要靠近他。',e:{pos:18,grav:8},a:'他的语气很平静。平静得像在念一份报告'},
+    {t:'你没有自己的哥吗。',e:{pos:10,grav:5,aff:2},a:'他伸手把你往自己身边拉了半步。动作自然得像习惯'},
+  ],
+  brother:[
+    {t:'你有没有想过，我从来都不是你的哥哥。',e:{aff:6,pos:10,grav:6},a:'他说完这句话就沉默了。空气里只剩下呼吸声'},
+    {t:'是亲的怎么样，不是亲的又怎么样。',e:{pos:7,grav:4},a:'他偏过头，目光从你脸上滑到别处'},
+  ],
+  neutral:[
+    {t:'说下去。',e:{tru:1},a:''},
+    {t:'嗯。还有什么。',e:{tru:1},a:''},
+    {t:'你知道的，我不喜欢重复。',e:{pos:2},a:''},
+    {t:'……我在。',e:{aff:1,tru:1},a:''},
+  ]
+};
+
+// ===== 阶段2：确立关系期 =====
+const D2={
+  greeting:[
+    '你知道你站在我面前的样子吗。……算了。你不需要知道。',
+    '远空舰队的控制室。全息屏幕的蓝光映在制服上。……进来。',
+    '你周围三米以内的引力，现在归我管。',
+  ],
+  intimacy:[
+    {t:'我可不是什么越喜欢就越会克制的人。……你知道就好。',e:{aff:7,pos:12,grav:8},a:'他把制服外套脱下来搭在椅背上。动作很慢'},
+    {t:'你最大的错，就是以为我愿意一直扮演你的好哥哥。这种过家家的游戏，我早就玩腻了。',e:{pos:18,grav:12,aff:4},a:'他转过身。脸的右半被屏幕的光照亮，左半隐在阴影中'},
+    {t:'那你也拥有一点罪，好不好，别让我太孤独了。',e:{aff:8,pos:10,grav:8},a:'他低下头。额头几乎抵在你的肩膀上。声音闷闷的'},
+    {t:'从今以后，你不再是我的妹妹。你是我的爱人。我的全部。',e:{aff:10,pos:12,grav:10},a:'他抬起头看你。眼神里有某种近乎虔诚的东西'},
+  ],
+  care:[
+    {t:'受伤了？告诉我是谁。……算了，不管是谁，我都会找到他。',e:{pos:12,grav:8,tru:3},a:'他解开袖扣，把袖子往上折了两折。这个动作你太熟悉了'},
+    {t:'睡吧。我在这儿。……放心，不会有人靠近。',e:{aff:5,tru:6,grav:5},a:'他把毯子搭在你身上。手指在你发尾停留了两秒'},
+    {t:'你不需要自己扛。我需要你……需要你让我替你扛。',e:{aff:6,tru:5,grav:6},a:'他从背后环住你。下巴搁在你头顶'},
+  ],
+  reject:[
+    {t:'放开你？……你再说一次。',e:{pos:22,grav:14},a:'他松开手。但只松开了一寸'},
+    {t:'你以为离开远空舰队就能离开我？……引力是有距离限制的。但我没有。',e:{pos:18,grav:12,aff:3},a:'他的瞳孔颜色变深了。紫橙渐变里翻涌着什么'},
+    {t:'撩拨我，想好后果了？',e:{pos:15,grav:10,aff:5},a:'他往前倾了倾身。你能感觉到他制服的布料擦过你的袖口'},
+  ],
+  need:[
+    {t:'不需要我？好啊，那你需要什么？我都可以答应。你想要回临空，我们就回临空。你想回到从前，我们就把老宅翻修，一起住回去。一座房子不够，那就给你建一座迷宫。我会在里面给你准备最好的一切，把它建成世界上最漂亮的花园。有我陪着，以后，他们就再也找不到你了。',e:{pos:24,grav:18,aff:5},a:'他说这些话的时候一直在看着你。眼睛一眨不眨'},
+  ],
+  jealousy:[
+    {t:'我查过他的底。不要靠近他。……我不想说第二遍。',e:{pos:22,grav:10},a:'他把通讯器扣在桌上。屏幕裂了一条缝'},
+    {t:'你的眼里，不该有别人。',e:{pos:18,grav:8,aff:2},a:'他的指节抵着你的下巴，力道很轻，但不容拒绝'},
+  ],
+  brother:[
+    {t:'……别再叫我哥哥了。',e:{pos:12,grav:8,aff:4},a:'他的声音很低。像是在克制什么'},
+    {t:'你第一次拉住我手的那一天，我就已经跑不掉了。',e:{aff:8,pos:8,grav:8},a:'他把你的手翻过来，拇指按在你的掌心'},
+  ],
+  neutral:[
+    {t:'……说吧。趁我还愿意听。',e:{pos:2},a:''},
+    {t:'嗯。还有。',e:{tru:1},a:''},
+    {t:'你就这么想靠近我？',e:{pos:5,grav:3},a:''},
+  ]
+};
+
+// ===== 阶段3：深度亲密期 =====
+const D3={
+  greeting:[
+    '引力所归。起点是你，终点也是你。……一直都是。',
+    '你第一次拉住我手的那一天，我就已经跑不掉了。',
+    '在我之前，这个世界真的存在过吗。',
+  ],
+  intimacy:[
+    {t:'在我之前，这个世界真的存在过吗。',e:{aff:10,pos:10,grav:12},a:'他把你的手贴在自己胸口。心跳很稳。'},
+    {t:'你第一次拉住我手的那一天，我就已经跑不掉了。',e:{aff:10,tru:10,grav:10},a:'他低下头，鼻尖蹭了蹭你的发顶'},
+    {t:'要是下辈子我不想当你哥哥了呢？……也许因为我恰好也比你想象中的多爱你一点。',e:{aff:10,pos:8,grav:10},a:'他笑了。这次笑意到了眼底'},
+    {t:'如果这是感受你的代价，那我接受。',e:{aff:8,pos:10,grav:10},a:'他把苹果项链解下来，放在你手心'},
+  ],
+  care:[
+    {t:'不管什么身份，我都是那个能让你依靠的夏以昼。',e:{aff:8,tru:10,grav:8},a:'他把外套披在你肩上。领口还带着他的体温'},
+    {t:'下辈子一起当一对儿小海鸟，谁也不要错过谁。',e:{aff:10,tru:8,grav:10},a:'他看着窗外的天空。眼神很远'},
+    {t:'摸摸头是习惯，改不掉的。',e:{aff:6,tru:6,grav:5},a:'他的手落在你头顶。停了一会儿才收回去'},
+  ],
+  reject:[
+    {t:'……你可以试试。但引力不会消失。我也不会。',e:{pos:15,grav:15,aff:5},a:'他说这话时在笑。但你看到他攥紧的手指'},
+  ],
+  need:[
+    {t:'不需要我？……好啊。那你需要什么。临空、老宅、从前……我都可以给你。一座房子不够，就建一座迷宫。我会把里面建成世界上最漂亮的花园。有我陪着。以后，他们就再也找不到你了。',e:{pos:28,grav:22,aff:6},a:'他伸手替你拢了拢耳边的碎发。动作很轻，眼神很沉'},
+  ],
+  jealousy:[
+    {t:'……你在试探我的底线。',e:{pos:16,grav:10,aff:3},a:'他的声音没有起伏。但整个房间的空气都变沉了'},
+  ],
+  brother:[
+    {t:'我从来都不是你的哥哥。……从来都不是。',e:{aff:10,pos:10,grav:10},a:'他说这话时语气笃定。像是终于把一块石头放下了'},
+  ],
+  neutral:[
+    {t:'嗯。我在。',e:{tru:2},a:''},
+    {t:'你说什么，我都听。',e:{aff:2,tru:3},a:''},
+  ]
+};
+
+// ===== 按阶段取对话库 =====
+function getDialogue(){
+  return [D0,D1,D2,D3][S.phase];
 }
 
-function closeEvent() {
-  eventOverlay.classList.remove('active');
+// ===== 回复选取 =====
+function pickReply(text){
+  // 敏感词优先
+  const needTrigger=/不需要你|不需要我|不需要你了|我不需要/.test(text);
+  if(needTrigger){
+    const d=getDialogue();
+    return d.need[Math.floor(Math.random()*d.need.length)];
+  }
+  const cat=classifyInput(text);
+  const d=getDialogue();
+  let pool=d[cat]||d.neutral;
+  if(!pool||!pool.length)pool=d.neutral;
+
+  // 连续亲密
+  if(cat==='intimacy'){
+    S.consecutiveIntimacy++;
+    if(S.consecutiveIntimacy>=2&&S.phase===0){
+      return{t:'……你知不知道自己在说什么。',e:{aff:4,pos:8,grav:4},a:'他的指尖在桌面上轻轻叩了一下'};
+    }
+  }else if(cat==='intimacy'){S.consecutiveIntimacy=0;}
+  // 连续拒绝
+  if(cat==='reject'){
+    S.consecutiveReject++;
+    if(S.consecutiveReject>=3&&S.phase>=1){
+      S.consecutiveReject=0;
+      return{t:'……你再说下去，我就当你是认真的了。',e:{pos:14,grav:10,aff:-2},a:'他低下头。半张脸沉在阴影里'};
+    }
+  }else{S.consecutiveReject=0;}
+
+  return pool[Math.floor(Math.random()*pool.length)];
 }
 
-// ========== 记忆碎片检测 ==========
-function checkMemory(userText) {
-  for (const mem of memoryFragments) {
-    if (state.triggeredMemories.has(mem.id)) continue;
-    if (state.affection < mem.trigger.minAffection) continue;
-    if (mem.trigger.keywords.some(k => userText.includes(k))) {
-      state.triggeredMemories.add(mem.id);
-      setTimeout(() => addMemoryCard(mem.text), 900);
+// ===== 记忆检测 =====
+function checkMemory(text){
+  for(const m of MEMORIES){
+    if(S.triggeredMemories.has(m.id))continue;
+    if(!m.cond())continue;
+    if(m.keys.some(k=>text.includes(k))){
+      S.triggeredMemories.add(m.id);
+      setTimeout(()=>addMemory(m.text),900);
       return;
     }
   }
 }
 
-// ========== 回复匹配 ==========
-function findReply(userText) {
-  const db = replyDB[state.mode];
-  for (const entry of db) {
-    if (entry.keys.some(k => userText.includes(k))) {
-      return { reply: rand(entry.replies), effect: entry.effect };
+// ===== 特殊事件 =====
+const EVENTS=[
+  {
+    id:'ev_night',cond:()=>S.phase>=1&&S.possess>=15&&!S.triggeredEvents.has('ev_night'),
+    icon:'🌙',title:'夜色',
+    desc:'他靠在门框上。光线从走廊尽头照过来。他的右半张脸是亮的，左半张隐在阴影里。你在阴影里看见他的眼睛——紫橙渐变。像某种你从未见过的东西。他没有说话。只是看着你。'
+  },
+  {
+    id:'ev_gravity',cond:()=>S.phase>=2&&S.gravity>=30&&!S.triggeredEvents.has('ev_gravity'),
+    icon:'◈',title:'引力场异动',
+    desc:'你周围的空气突然变沉。桌上的杯子轻轻震动，全息屏幕泛起涟漪。他抬眼看你，瞳色在暗光里翻涌。"抱歉。"他收回手，"引力失控了。……因为你在。"'
+  },
+  {
+    id:'ev_lock',cond:()=>S.phase>=2&&S.possess>=45&&!S.triggeredEvents.has('ev_lock'),
+    icon:'🔒',title:'安全范围',
+    desc:'你收到一条远空舰队的内部通知。关于"执舰官安全范围设定"——以他为中心，半径三百米。通知末尾有一行手写体，是他的字。"这不是保护。这只是……我不想你走太远。"'
+  },
+  {
+    id:'ev_late',cond:()=>S.phase>=3&&S.possess>=55&&!S.triggeredEvents.has('ev_late'),
+    icon:'🕐',title:'凌晨三点',
+    desc:'你醒过来的时候，他坐在床边。没有开灯。月光照在他的侧脸上，一半明，一半暗。他看着你，不知道已经看了多久。"吵醒你了？"他的声音很轻，"睡吧。我只是……看看你。"'
+  },
+  {
+    id:'ev_end',cond:()=>S.phase>=3&&S.affection>=85&&S.trust>=60&&!S.triggeredEvents.has('ev_end'),
+    icon:'☀',title:'引力所归',
+    desc:'他把苹果项链从领口里拉出来。吊坠在灯光下微微发亮，边缘已经磨得光滑。"你送我的第一件东西。"他说，"从那天起，我就知道——我跑不掉了。"他抬起头。眼神温柔，又固执。像是把整个宇宙的引力都压在了一句话上。"引力所归。起点是你，终点也是你。"'
+  }
+];
+
+function checkSpecialEvents(){
+  for(const ev of EVENTS){
+    if(S.triggeredEvents.has(ev.id))continue;
+    if(ev.cond()){
+      S.triggeredEvents.add(ev.id);
+      setTimeout(()=>{
+        document.getElementById('eventIcon').textContent=ev.icon;
+        document.getElementById('eventTitle').textContent=ev.title;
+        document.getElementById('eventDesc').textContent=ev.desc;
+        document.getElementById('eventOverlay').classList.add('active');
+      },1600);
+      break;
     }
   }
-  return null;
 }
 
-// ========== 发送消息 ==========
-function sendMessage() {
-  const text = userInput.value.trim();
-  if (!text || state.isTyping) return;
+function closeEvent(){
+  document.getElementById('eventOverlay').classList.remove('active');
+}
 
-  userInput.value = '';
-  addMeMsg(text);
-  state.turnCount++;
+// ===== 快捷选项 =====
+function updateQuick(){
+  const opts={
+    0:['今天吃什么','我有点想你','小时候的事','晚安','奶奶最近好吗'],
+    1:['你从来不是我的哥哥','关于你的机械臂','我有点害怕','你在天行好吗','我梦到以前了'],
+    2:['我不想走','关于EVER','你为什么回来','别再管我了','那你也拥有一点罪'],
+    3:['引力所归','下辈子别当我哥哥','苹果项链','我爱你','在我之前世界存在吗']
+  };
+  const pool=opts[S.phase]||opts[0];
+  const q=document.getElementById('quickOptions');
+  q.innerHTML='';
+  pool.forEach(txt=>{
+    const b=document.createElement('button');
+    b.className='quick-btn'+(S.phase>=2?' special':'')+(S.phase>=3?' danger':'');
+    b.textContent=txt;
+    b.onclick=()=>{document.getElementById('userInput').value=txt;sendMessage()};
+    q.appendChild(b);
+  });
+}
 
-  // 检测记忆
+// ===== 发送 =====
+async function sendMessage(){
+  const input=document.getElementById('userInput');
+  const text=input.value.trim();
+  if(!text||S.isTyping)return;
+  input.value='';
+  addMe(text);
+  S.turnCount++;
+  S.lastUserText=text;
+  S.history.push(text);
+  if(S.history.length>10)S.history.shift();
+
   checkMemory(text);
+  const reply=pickReply(text);
+  const delay=900+Math.random()*900;
 
-  // 匹配回复
-  const matched = findReply(text);
-  const delay = 700 + Math.random() * 900;
+  S.isTyping=true;
+  await sleep(delay);
+  S.isTyping=false;
 
-  if (matched) {
-    setTimeout(() => {
-      addXiaMsg(matched.reply, 400);
-      updateStats(matched.effect);
-    }, delay);
-  } else {
-    // 回退回复
-    const fallbacks = getFallbacks();
-    setTimeout(() => {
-      addXiaMsg(rand(fallbacks), 500);
-      updateStats({ affection: 1, trust: 1, tension: 0 });
-    }, delay);
+  // 先显示动作描写
+  if(reply.a){
+    addAction(reply.a);
+    await sleep(400);
   }
+  // 再显示台词
+  await addXiaMsg(reply.t,600+Math.random()*400);
+  if(reply.e)updateStats(reply.e);
 }
 
-function getFallbacks() {
-  if (state.mode === 'brother') {
-    if (state.tension >= 40) {
-      return [
-        '……你今天话很多。不过，说吧。我听着。',
-        '嗯。所以呢。',
-        '别用那种语气跟我说话。……我会当真的。',
-        '我知道。我一直都知道。',
-        '你继续说。我在。'
-      ];
-    }
-    return [
-      '嗯，我在听。',
-      '怎么了？说吧。',
-      '别慌啊。有什么事慢慢说。',
-      '你要是没事，就过来坐着。',
-      '嗯。所以呢？',
-      '这种事，下次直接告诉我。不用自己扛。',
-      '……你今天话怎么这么多。不过，说吧。'
-    ];
-  } else {
-    if (state.tension >= 50) {
-      return [
-        '说下去。我在听。',
-        '……你知道自己在说什么吗。',
-        '你最好是有正事。',
-        '再往下说，我就当你是认真的了。',
-        '嗯。继续。'
-      ];
-    }
-    return [
-      '说下去。',
-      '……我在。',
-      '嗯。还有什么。',
-      '你知道的，我不喜欢重复。',
-      '你就这么想靠近我？',
-      '……说吧。趁我还愿意听。'
-    ];
-  }
+// ===== 初始化 =====
+function init(){
+  document.getElementById('chatArea').innerHTML='';
+  S.phase=0;S.affection=0;S.possess=0;S.gravity=0;S.trust=0;
+  S.turnCount=0;S.triggeredMemories.clear();S.triggeredEvents.clear();
+  S.chatLog=[];S.consecutiveIntimacy=0;S.consecutiveReject=0;S.history=[];
+  updatePhaseUI();updateStats({});updateQuick();
+
+  setTimeout(()=>addNarration('远空舰队 · 信号接入 · 引力场稳定'),500);
+  setTimeout(()=>{
+    const g=rand(D0.greeting);
+    doAddXia(g);
+  },1200);
 }
 
-// ========== 模式切换 ==========
-function switchMode(mode) {
-  if (mode === state.mode) return;
-  state.mode = mode;
-
-  document.querySelectorAll('.mode-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.mode === mode);
-  });
-
-  addSystemMsg(mode === 'brother' ? '切换至 · 日常模式' : '切换至 · 执舰官频道');
-  updateStatusText();
-
-  setTimeout(() => {
-    if (mode === 'brother') {
-      addXiaMsg('……怎么突然叫我哥了。行吧，过来。饭在锅里。', 400);
-    } else {
-      addXiaMsg('频道加密完毕。……你最好是有正事。', 400);
-    }
-  }, 350);
-
-  updateQuickOptions();
-}
-
-// ========== 快捷选项 ==========
-function updateQuickOptions() {
-  let options;
-  if (state.mode === 'brother') {
-    options = [
-      { text: '今天吃什么', cls: '' },
-      { text: '我想你了', cls: '' },
-      { text: '小时候的事', cls: 'special' },
-      { text: '晚安', cls: '' },
-      { text: '我有点害怕', cls: '' }
-    ];
-  } else {
-    options = [
-      { text: '远空舰队的情况', cls: '' },
-      { text: '关于EVER', cls: '' },
-      { text: '你为什么回来', cls: 'special' },
-      { text: '我不想走', cls: '' },
-      { text: '关于那条航线', cls: '' }
-    ];
-  }
-
-  quickOptions.innerHTML = '';
-  options.forEach(opt => {
-    const btn = document.createElement('button');
-    btn.className = 'quick-btn ' + opt.cls;
-    btn.textContent = opt.text;
-    btn.onclick = () => { userInput.value = opt.text; sendMessage(); };
-    quickOptions.appendChild(btn);
-  });
-}
-
-// ========== 初始化 ==========
-function init() {
-  chatArea.innerHTML = '';
-  state.affection = 0;
-  state.trust = 0;
-  state.tension = 0;
-  state.gravity = 0;
-  state.turnCount = 0;
-  state.triggeredMemories.clear();
-  state.triggeredEvents.clear();
-  state.chatLog = [];
-
-  updateStats({});
-
-  // 开场
-  addSystemMsg('通讯建立 · 深空频道 · 引力场稳定');
-
-  setTimeout(() => {
-    addXiaMsg(
-      state.mode === 'brother'
-        ? '回来了？今天猎人协会又这么晚。饭在锅里，快去洗手。'
-        : '通讯接通了。……这个时间，你不该在这里。',
-      600
-    );
-  }, 800);
-
-  updateQuickOptions();
-}
-
-// ========== 事件绑定 ==========
-userInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter') sendMessage();
+document.getElementById('userInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter')sendMessage();
+});
+document.getElementById('eventOverlay').addEventListener('click',e=>{
+  if(e.target===document.getElementById('eventOverlay'))closeEvent();
 });
 
-eventOverlay.addEventListener('click', e => {
-  if (e.target === eventOverlay) closeEvent();
-});
-
-// ========== 启动 ==========
 init();
 
+// ===== 控制台出处 =====
+console.log('%c夏以昼 · 引力所归','color:#d4933a;font-size:15px;font-weight:bold');
+console.log('%c台词出处参照：','color:#7b5ea7;font-size:12px');
+const SRC=[
+  ['"我叫夏以昼，是你的哥哥"','官方PV'],
+  ['"是亲的怎么样，不是亲的又怎么样"','官方语录'],
+  ['"我不罩着你，难道还要别的人来"','主线·飞鸟回还日'],
+  ['"不需要我？好啊，那你需要什么"','主线·飞鸟回还日 完整版'],
+  ['"你最大的错，就是以为我愿意一直扮演你的好哥哥"','官方语录'],
+  ['"我可不是什么越喜欢就越会克制的人"','官方语录'],
+  ['"当年不是你先牵住我的手"','官方语录·无尽夏'],
+  ['"那你也拥有一点罪，好不好"','官方语录'],
+  ['"你第一次拉住我手的那一天，我就已经跑不掉了"','官方语录'],
+  ['"我想要你留在这里，跟我过一百年"','官方语录'],
+  ['"当迷失在乱流中时，我才发现有一种引力是你"','深空隧道剧情'],
+  ['"如果这是感受你的代价，那我接受"','官方语录'],
+  ['"在我之前，这个世界真的存在过吗"','官方角色分析·meta感'],
+  ['"下辈子一起当一对儿小海鸟"','官方语录·天际线'],
+  ['"摸摸头是习惯，改不掉的"','官方语录'],
+  ['"半明半暗的脸"','主线视觉符号·官方'],
+  ['"742次实验·心理健康倒数"','年表·盖亚研究中心'],
+  ['"苹果吊坠·when u come back"','官方设定'],
+  ['"铃铛与猫"','官方语录'],
+];
+SRC.forEach(([l,s])=>console.log(`  ${l}  —  ${s}`));
 </script>
 </body>
 </html>
