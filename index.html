@@ -8,7 +8,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --gold:#d4933a;--gold-light:#e8c87a;--purple:#7b5ea7;--purple-deep:#4a3670;
+  --gold:#d4933a;--gold-light:#e8c87a;--purple:#7b5ea7;
   --bg-dark:#05070e;--bg-panel:rgba(9,12,20,0.97);
   --text-main:#d8cdb8;--text-dim:#7a6a4a;--text-ghost:#332a1e;
   --border-gold:rgba(212,147,58,0.22);--border-soft:rgba(180,140,80,0.07);
@@ -20,8 +20,6 @@ body{
   display:flex;justify-content:center;align-items:center;min-height:100vh;padding:10px;
   overflow:hidden;position:relative;
 }
-
-/* ===== 星空背景（静态，不做动画）===== */
 body::before{
   content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   background:
@@ -34,45 +32,30 @@ body::before{
     radial-gradient(1px 1px at 38% 32%,rgba(255,180,80,0.25),transparent),
     radial-gradient(2px 2px at 88% 8%,rgba(255,200,100,0.4),transparent),
     radial-gradient(1px 1px at 18% 85%,rgba(255,255,255,0.22),transparent),
-    radial-gradient(1.5px 1.5px at 48% 70%,rgba(180,140,255,0.3),transparent),
-    radial-gradient(1px 1px at 92% 62%,rgba(255,255,255,0.2),transparent),
-    radial-gradient(1px 1px at 15% 45%,rgba(255,220,150,0.3),transparent);
+    radial-gradient(1.5px 1.5px at 48% 70%,rgba(180,140,255,0.3),transparent);
 }
-
-/* ===== 星云光晕（静态叠加，GPU合成层）===== */
 body::after{
   content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   background:
     radial-gradient(circle at 22% 28%,rgba(123,94,167,0.09) 0%,transparent 42%),
-    radial-gradient(circle at 78% 72%,rgba(212,147,58,0.055) 0%,transparent 42%),
-    radial-gradient(circle at 55% 50%,rgba(80,60,140,0.04) 0%,transparent 55%);
+    radial-gradient(circle at 78% 72%,rgba(212,147,58,0.055) 0%,transparent 42%);
   animation:nebulaBreathe 18s ease-in-out infinite alternate;
-  will-change:opacity;
-  transform:translateZ(0);
+  will-change:opacity;transform:translateZ(0);
 }
-@keyframes nebulaBreathe{
-  0%{opacity:0.7}
-  100%{opacity:1}
-}
+@keyframes nebulaBreathe{0%{opacity:0.7}100%{opacity:1}}
 
-/* ===== 终端主体 ===== */
 .terminal{
   position:relative;z-index:1;width:100%;max-width:780px;height:95vh;max-height:920px;
   background:var(--bg-panel);border:1px solid var(--border-gold);border-radius:14px;
-  box-shadow:
-    0 0 80px rgba(200,150,70,0.06),
-    0 0 160px rgba(100,80,180,0.035),
-    0 24px 80px rgba(0,0,0,0.75),
-    inset 0 0 120px rgba(0,0,0,0.5);
+  box-shadow:0 0 80px rgba(200,150,70,0.06),0 0 160px rgba(100,80,180,0.035),
+    0 24px 80px rgba(0,0,0,0.75),inset 0 0 120px rgba(0,0,0,0.5);
   overflow:hidden;display:flex;flex-direction:column;
 }
-/* 顶部装饰光带 */
 .terminal::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
   background:linear-gradient(90deg,transparent,var(--gold),var(--purple),var(--gold),transparent);
   opacity:0.55;z-index:2;
 }
-/* 阶段氛围光——用opacity切换，GPU友好 */
 .terminal::after{
   content:'';position:absolute;top:0;left:0;right:0;height:140px;pointer-events:none;
   background:linear-gradient(180deg,rgba(123,94,167,0.05),transparent);
@@ -82,7 +65,6 @@ body::after{
 .terminal[data-phase="2"]::after{opacity:1;background:linear-gradient(180deg,rgba(180,80,100,0.06),transparent)}
 .terminal[data-phase="3"]::after{opacity:1;background:linear-gradient(180deg,rgba(212,147,58,0.07),transparent)}
 
-/* ===== 头部 ===== */
 .header{
   display:flex;align-items:center;justify-content:space-between;
   padding:13px 22px 9px;
@@ -91,14 +73,11 @@ body::after{
   position:relative;z-index:1;
 }
 .header-left{display:flex;align-items:center;gap:12px}
-
-/* 头像环——旋转保留，只用transform，GPU加速 */
 .avatar-ring{position:relative;width:46px;height:46px;will-change:transform}
 .avatar-ring::before{
   content:'';position:absolute;inset:-2.5px;border-radius:50%;
   background:conic-gradient(var(--gold),var(--purple),var(--gold),var(--purple),var(--gold));
-  animation:ringRotate 14s linear infinite;
-  transform:translateZ(0);
+  animation:ringRotate 14s linear infinite;transform:translateZ(0);
 }
 @keyframes ringRotate{to{transform:rotate(360deg) translateZ(0)}}
 .avatar{
@@ -113,7 +92,6 @@ body::after{
 .status-dot{width:5px;height:5px;border-radius:50%;background:#5ad87a;box-shadow:0 0 8px #5ad87a;animation:pulse 3s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.35}}
 
-/* ===== 阶段指示 ===== */
 .phase-bar{
   display:flex;padding:6px 22px 3px;gap:0;border-bottom:1px solid var(--border-soft);flex-shrink:0;
   background:rgba(7,9,16,0.6);position:relative;z-index:1;
@@ -129,9 +107,8 @@ body::after{
   margin:4px auto 0;transition:all 0.5s;
 }
 .phase-step.active .dot{background:var(--gold);box-shadow:0 0 10px var(--gold);width:5px;height:5px}
-.phase-step.done .dot{background:rgba(212,147,58,0.4);box-shadow:0 0 4px rgba(212,147,58,0.3)}
+.phase-step.done .dot{background:rgba(212,147,58,0.4)}
 
-/* ===== 状态条 ===== */
 .status-panel{
   padding:7px 22px 5px;border-bottom:1px solid var(--border-soft);flex-shrink:0;
   display:grid;grid-template-columns:1fr 1fr;gap:5px 16px;position:relative;z-index:1;
@@ -139,14 +116,13 @@ body::after{
 .stat-row{display:flex;align-items:center;gap:6px}
 .stat-label{font-size:9px;color:var(--text-ghost);letter-spacing:1.5px;white-space:nowrap;min-width:36px}
 .stat-track{flex:1;height:2.5px;background:rgba(255,255,255,0.04);border-radius:2px;overflow:hidden}
-.stat-fill{height:100%;width:0%;border-radius:2px;transition:width 0.9s cubic-bezier(0.4,0,0.2,1);position:relative}
+.stat-fill{height:100%;width:0%;border-radius:2px;transition:width 0.9s cubic-bezier(0.4,0,0.2,1)}
 .stat-fill.affection{background:linear-gradient(90deg,#4a2d7a,var(--gold),#ff6b8a);box-shadow:0 0 8px rgba(212,147,58,0.3)}
 .stat-fill.possess{background:linear-gradient(90deg,#5a1a3a,#cf5a7a,#ff4060);box-shadow:0 0 8px rgba(207,90,122,0.3)}
 .stat-fill.gravity{background:linear-gradient(90deg,#2a1a4a,#7b5ea7,#c8963a);box-shadow:0 0 8px rgba(123,94,167,0.3)}
 .stat-fill.trust{background:linear-gradient(90deg,#1a3a5a,#5aadcf);box-shadow:0 0 8px rgba(90,173,207,0.25)}
 .stat-value{font-size:9px;color:var(--gold);min-width:20px;text-align:right;font-variant-numeric:tabular-nums}
 
-/* ===== 聊天区 ===== */
 .chat-area{
   flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:13px;
   scroll-behavior:smooth;min-height:0;position:relative;z-index:1;
@@ -154,6 +130,7 @@ body::after{
 }
 .chat-area::-webkit-scrollbar{width:2px}
 .chat-area::-webkit-scrollbar-thumb{background:rgba(180,140,80,0.15);border-radius:1px}
+
 .msg{display:flex;gap:8px;max-width:88%;animation:msgIn 0.4s cubic-bezier(0.16,1,0.3,1)}
 @keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .msg.xia{align-self:flex-start}
@@ -163,10 +140,7 @@ body::after{
   display:flex;align-items:center;justify-content:center;
   font-size:9px;font-weight:700;color:#fff;
 }
-.msg.xia .mini-avatar{
-  background:linear-gradient(135deg,#3d2570,#906020);
-  box-shadow:0 0 14px rgba(180,140,80,0.15),inset 0 0 8px rgba(0,0,0,0.3);
-}
+.msg.xia .mini-avatar{background:linear-gradient(135deg,#3d2570,#906020);box-shadow:0 0 14px rgba(180,140,80,0.15),inset 0 0 8px rgba(0,0,0,0.3)}
 .msg.me .mini-avatar{background:linear-gradient(135deg,#1a3050,#3a6a8a);box-shadow:0 0 10px rgba(90,140,200,0.1)}
 .bubble{padding:10px 15px;border-radius:13px;font-size:13px;line-height:1.85;word-break:break-word}
 .msg.xia .bubble{
@@ -182,24 +156,30 @@ body::after{
   box-shadow:0 2px 12px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.02);
 }
 
-/* 动作描写 */
+/* 内心独白——新 */
+.thought{
+  align-self:flex-start;max-width:80%;font-size:11px;color:rgba(200,160,80,0.45);
+  font-style:italic;line-height:1.9;padding:4px 0 4px 37px;
+  animation:msgIn 0.5s cubic-bezier(0.16,1,0.3,1);
+  border-left:1px solid rgba(180,140,80,0.15);margin-left:37px;padding-left:14px;
+}
+.thought::before{content:'· ';color:rgba(180,140,80,0.3)}
+
 .action{
   align-self:flex-start;max-width:88%;font-size:11.5px;color:var(--text-ghost);
   font-style:italic;letter-spacing:0.5px;line-height:1.8;padding:2px 0 2px 37px;
-  animation:msgIn 0.6s cubic-bezier(0.16,1,0.3,1);
+  animation:msgIn 0.55s cubic-bezier(0.16,1,0.3,1);
 }
 .action::before{content:'（';margin-right:1px}
 .action::after{content:'）';margin-left:1px}
 
-/* 旁白 */
 .narration{
   align-self:center;max-width:94%;text-align:center;font-size:11px;color:var(--text-ghost);
   letter-spacing:2px;line-height:2;padding:6px 0;
-  animation:msgIn 0.7s cubic-bezier(0.16,1,0.3,1);
+  animation:msgIn 0.6s cubic-bezier(0.16,1,0.3,1);
 }
 .narration::before,.narration::after{content:'—';margin:0 8px;color:rgba(180,140,80,0.12)}
 
-/* 记忆碎片——扫光用transform，GPU友好 */
 .memory-card{
   align-self:center;max-width:95%;padding:14px 20px;
   background:linear-gradient(135deg,rgba(123,94,167,0.07),rgba(212,147,58,0.04));
@@ -216,24 +196,18 @@ body::after{
 .memory-card::after{
   content:'';position:absolute;top:0;left:0;width:100%;height:100%;
   background:linear-gradient(90deg,transparent,rgba(212,147,58,0.06),transparent);
-  transform:translateX(-100%);
-  animation:memoryShine 4s ease-in-out infinite;
+  transform:translateX(-100%);animation:memoryShine 4s ease-in-out infinite;
   will-change:transform;pointer-events:none;
 }
 @keyframes memoryIn{from{opacity:0;transform:scale(0.96) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
-@keyframes memoryShine{
-  0%{transform:translateX(-100%)}
-  60%,100%{transform:translateX(100%)}
-}
+@keyframes memoryShine{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
 
-/* 打字指示 */
 .typing-indicator{display:flex;align-items:center;gap:5px;padding:9px 15px}
 .typing-indicator span{width:5px;height:5px;border-radius:50%;background:var(--text-dim);animation:typing 1.3s infinite}
 .typing-indicator span:nth-child(2){animation-delay:0.2s}
 .typing-indicator span:nth-child(3){animation-delay:0.4s}
 @keyframes typing{0%,60%,100%{opacity:0.2;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
 
-/* ===== 快捷 ===== */
 .quick-options{padding:0 20px 7px;display:flex;flex-wrap:wrap;gap:5px;flex-shrink:0;position:relative;z-index:1}
 .quick-btn{
   padding:5px 13px;border-radius:15px;border:1px solid rgba(180,140,80,0.13);
@@ -242,22 +216,14 @@ body::after{
 }
 .quick-btn:hover{
   background:rgba(180,140,80,0.09);color:var(--gold-light);
-  border-color:rgba(180,140,80,0.4);
-  box-shadow:0 0 18px rgba(180,140,80,0.08);
+  border-color:rgba(180,140,80,0.4);box-shadow:0 0 18px rgba(180,140,80,0.08);
   transform:translateY(-1px);
 }
 .quick-btn.special{border-color:rgba(123,94,167,0.22);color:#8a6abf}
-.quick-btn.special:hover{
-  background:rgba(123,94,167,0.1);border-color:rgba(123,94,167,0.5);
-  color:#b898e8;box-shadow:0 0 18px rgba(123,94,167,0.12);
-}
+.quick-btn.special:hover{background:rgba(123,94,167,0.1);border-color:rgba(123,94,167,0.5);color:#b898e8}
 .quick-btn.danger{border-color:rgba(180,60,90,0.22);color:#a05070}
-.quick-btn.danger:hover{
-  background:rgba(180,60,90,0.1);border-color:rgba(180,60,90,0.5);
-  color:#d87898;box-shadow:0 0 18px rgba(180,60,90,0.12);
-}
+.quick-btn.danger:hover{background:rgba(180,60,90,0.1);border-color:rgba(180,60,90,0.5);color:#d87898}
 
-/* ===== 输入 ===== */
 .input-area{
   padding:10px 20px 16px;border-top:1px solid var(--border-soft);
   display:flex;gap:9px;align-items:center;background:rgba(5,7,13,0.8);
@@ -282,20 +248,15 @@ body::after{
   letter-spacing:3px;font-family:inherit;white-space:nowrap;
   box-shadow:0 2px 14px rgba(123,94,167,0.2),inset 0 1px 0 rgba(255,255,255,0.1);
 }
-.input-area button:hover{
-  box-shadow:0 0 32px rgba(180,140,80,0.25),inset 0 1px 0 rgba(255,255,255,0.15);
-  transform:translateY(-1px);
-}
+.input-area button:hover{box-shadow:0 0 32px rgba(180,140,80,0.25),inset 0 1px 0 rgba(255,255,255,0.15);transform:translateY(-1px)}
 .input-area button:active{transform:translateY(0)}
 .input-area button:disabled{opacity:0.4;cursor:not-allowed;transform:none}
 
-/* ===== 事件弹窗 ===== */
 .event-overlay{
   position:absolute;inset:0;background:rgba(3,5,9,0.92);
   display:flex;align-items:center;justify-content:center;
   z-index:10;opacity:0;pointer-events:none;
-  transition:opacity 0.6s;border-radius:14px;
-  backdrop-filter:blur(4px);
+  transition:opacity 0.6s;border-radius:14px;backdrop-filter:blur(4px);
 }
 .event-overlay.active{opacity:1;pointer-events:all}
 .event-box{
@@ -368,7 +329,8 @@ body::after{
 </div>
 <script>
 // ================================================================
-// 夏以昼 · 引力所归 — 美观性能平衡版
+// 夏以昼 · 引力所归 — 心情驱动对话引擎
+// 核心：他先想，再动，最后说。同一句话在不同心情下完全不同。
 // ================================================================
 
 const PHASES=[
@@ -382,12 +344,23 @@ const S={
   phase:0,affection:0,possess:0,gravity:0,trust:0,
   turnCount:0,isTyping:false,
   triggeredMemories:new Set(),triggeredEvents:new Set(),
-  consecutiveIntimacy:0,consecutiveReject:0
+  // 心情系统
+  mood:'warm',           // warm | teasing | jealous | possessive | vulnerable | hurt | tender
+  moodIntensity:0,       // 0-10
+  // 上下文
+  recentUserTexts:[],    // 最近用户输入
+  recentThemes:[],       // 最近主题
+  consecutiveIntimacy:0,
+  consecutiveReject:0,
+  lastMentioned:null,    // 用户最近提到的人/事
+  // 内心独白池——已说过的独白不重复
+  usedThoughts:new Set(),
 };
 
 const DOM={};
 function rand(a){return a[Math.floor(Math.random()*a.length)]}
 function clamp(v,mn,mx){return v<mn?mn:v>mx?mx:v}
+function chance(p){return Math.random()<p}
 
 function computePhase(){
   let p=0;
@@ -419,7 +392,7 @@ function updateStats(effect){
   if(!effect)return;
   S.affection=clamp(S.affection+(effect.aff||0),0,100);
   S.possess=clamp(S.possess+(effect.pos||0),0,100);
-  S.gravity=clamp(S.gravity+(effect.grav||Math.round((S.affection*0.2+S.possess*0.5)/8)),0,100);
+  S.gravity=clamp(S.gravity+(effect.grav||Math.round((S.affection*0.2+S.possess*0.5)/10)),0,100);
   S.trust=clamp(S.trust+(effect.tru||0),0,100);
   scheduleStatsUpdate();
 
@@ -466,6 +439,11 @@ function addMe(text){
   DOM.chatArea.appendChild(d);
   scrollBottom();
 }
+function addThought(text){
+  const d=document.createElement('div');
+  d.className='thought';d.textContent=text;
+  DOM.chatArea.appendChild(d);scrollBottom();
+}
 function addAction(text){
   const d=document.createElement('div');
   d.className='action';d.textContent=text;
@@ -493,7 +471,263 @@ function showTyping(){
 }
 function hideTyping(){if(typingEl){typingEl.remove();typingEl=null}}
 
-// ===== 记忆碎片 =====
+// ================================================================
+// 心情系统 — 根据输入更新他此刻的心情
+// ================================================================
+function updateMood(text){
+  const t=text;
+  // 优先级：受伤 > 占有 > 嫉妒 > 脆弱 > 调情 > 温柔
+  if(/不需要你|不需要我|不需要你了|我不需要/.test(t)){
+    S.mood='hurt'; S.moodIntensity=Math.min(10,S.moodIntensity+4); return;
+  }
+  if(/讨厌|烦|放开|别管|分手|结束|不要你|松开|走开|离开我/.test(t)){
+    S.mood='possessive'; S.moodIntensity=Math.min(10,S.moodIntensity+3); return;
+  }
+  if(/黎深|医生|蒋飞|别人|和谁|朋友|同事/.test(t)){
+    S.mood='jealous'; S.moodIntensity=Math.min(10,S.moodIntensity+3); return;
+  }
+  if(/怕|害怕|担心|噩梦|梦到/.test(t)){
+    S.mood='vulnerable'; S.moodIntensity=Math.min(10,S.moodIntensity+2); return;
+  }
+  if(/喜欢|爱你|想你|心动|抱|亲|牵手|吻|拥抱|好想/.test(t)){
+    S.mood='tender'; S.moodIntensity=Math.min(10,S.moodIntensity+2); return;
+  }
+  if(/哥哥|哥/.test(t)){
+    S.mood='possessive'; S.moodIntensity=Math.min(10,S.moodIntensity+1); return;
+  }
+  if(/吃|饿|饭|休息|累|晚安|睡|辛苦|疼|受伤|注意|小心|冷|淋/.test(t)){
+    S.mood='warm'; S.moodIntensity=Math.min(10,S.moodIntensity+1); return;
+  }
+  // 中性——心情缓慢衰减
+  S.moodIntensity=Math.max(0,S.moodIntensity-1);
+  if(S.moodIntensity<=2)S.mood='warm';
+}
+
+// ================================================================
+// 内心独白库 — 他此刻在想什么
+// ================================================================
+const THOUGHTS={
+  warm:[
+    '她回来了。灯我留着。',
+    '……又在外面跑了一天。',
+    '她看着我的时候，眼睛还是和小时候一样。',
+    '别问。问了就藏不住了。',
+    '今天没受伤就好。',
+    '小祖宗。',
+    '她身上有雨的味道。',
+  ],
+  tender:[
+    '……这种话，再多说一句我就当真了。',
+    '我明明答应过自己慢一点的。',
+    '她不知道她说这话的时候是什么样子。',
+    '心跳不对。稳住。',
+    '别看我。再看我就真的忍不住了。',
+    '……算了。就这样吧。',
+  ],
+  jealous:[
+    '又是他。',
+    '……她笑的时候眼睛是弯的。不是对着我。',
+    '我不该在意。但我在意。',
+    '黎深。',
+    '她身边不该有别的人。',
+    '冷静。……冷静不了。',
+  ],
+  possessive:[
+    '她不知道自己在说什么。',
+    '当年是她先拉住我的。',
+    '跑不掉的。',
+    '哥哥。她叫这两个字的时候，我听着像刀。',
+    '我早就不是她的哥哥了。从来都不是。',
+    '她以为她可以离开？',
+  ],
+  hurt:[
+    '……她说不需要我。',
+    '好。好啊。',
+    '不行。不能这样。',
+    '我做了什么让她这么说的。',
+    '我需要她。她不知道。',
+    '……那她需要什么。什么我都给。只要她还在。',
+    '脸有点烫。左边是热的，右边是冷的。',
+  ],
+  vulnerable:[
+    '她怕的时候，第一个想到的是谁。',
+    '……不是我。',
+    '别离开我。别。',
+    '她做噩梦了。梦里是谁。',
+    '我在这里。',
+    '……我一直在。',
+  ],
+};
+
+// 心情对应的动作前置
+const MOOD_ACTIONS={
+  warm:[
+    '他停下手里的东西，抬头看你',
+    '他把杯子推到你面前，没说话',
+    '他靠在门框上，目光落在你身上',
+    '他伸手拂掉你肩上的东西，动作很轻',
+  ],
+  tender:[
+    '他垂下眼，指尖在桌沿停了一瞬',
+    '他的呼吸慢了半拍',
+    '他偏过头，喉结动了一下',
+    '他的目光在你脸上停了两秒，然后移开',
+  ],
+  jealous:[
+    '他低头给你盛汤，勺子碰了一下碗沿',
+    '他靠在墙上，双手交叉，指节微微发白',
+    '他把手机屏幕翻过去，放在桌上',
+    '他笑了一下。笑意没有到眼底',
+  ],
+  possessive:[
+    '他的声音低了下去',
+    '他往前迈了一步。你没动。他也没退',
+    '他把手搭在你身侧的桌沿上，没有碰你，但圈住了范围',
+    '他的瞳孔缩了一下。紫橙渐变在暗光里翻涌',
+  ],
+  hurt:[
+    '他放下手里的东西。空气突然变得很安静',
+    '他的脸一半在灯下，一半在阴影里',
+    '他低下头。你看不清他的表情',
+    '他松开手。但只松开了一寸',
+  ],
+  vulnerable:[
+    '他站在窗边，月光把他的影子拉得很长',
+    '他垂着眼，手指慢慢蜷起',
+    '他安静了几秒。像是没听到你在说什么',
+    '他侧过脸，让光落在另半边',
+  ],
+};
+
+// ================================================================
+// 回应库 — 心情 × 阶段 × 主题 交叉
+// ================================================================
+// 结构： { thought?:强制独白, action?:强制动作, lines:[多句候选], effect:{} }
+// lines里可以有一句主句，也可以是多句，用"|"分隔，每次随机挑一句
+const RESPONSES={
+
+// ============ 兄妹期 ============
+0:{
+  warm:[
+    {a:'他把玄关的灯开了。',lines:['回来了。饭在锅里。先去洗手。','嗯，是我。……你看起来像见了鬼。','别站在门口。进来，外面冷。'],e:{aff:2,tru:2}},
+    {a:'他一边擦手一边从厨房出来。',lines:['红烧鸡翅，马上就好。别偷吃。……好吧，就一块。','今天猎人协会又这么晚。先吃饭。','你再把我当小孩，我就往你饭里下香菜。'],e:{aff:2,tru:3}},
+  ],
+  tender:[
+    {lines:['……你说什么？我没听清。再、再说一遍好不好。'],e:{aff:3,pos:4,grav:2}},
+    {lines:['别慌啊。我没叫你哥，你怎么自己变称呼了。'],e:{aff:2,pos:3}},
+    {lines:['我真想你一直这么抱着我，埋进你的颈窝。……算了，当我没说。'],e:{aff:4,pos:5,grav:3}},
+  ],
+  jealous:[
+    {a:'他给你盛汤。勺子碰了一下碗沿。',lines:['和谁一起？……玩得开心就好。'],e:{pos:8,grav:3}},
+    {lines:['……黎深？他只是一个医生。跟你没什么关系。'],e:{pos:10,grav:4}},
+    {a:'他靠在门框上，双手交叉。指节发白。',lines:['叫得挺亲热。'],e:{pos:7,grav:2}},
+  ],
+  possessive:[
+    {lines:['……你讨厌我？好啊。那你讨厌我，我也要管你。'],e:{pos:8,grav:4}},
+    {lines:['当年不是你先牵住我的手，让我成为了你的哥哥么？现在你觉得自己长大了……就要松开这只手了吗？'],e:{pos:10,grav:6,aff:2}},
+  ],
+  hurt:[
+    {a:'他放下手里的东西。你听见很轻的一声。',lines:['不需要我？……你再说一遍。'],e:{pos:12,grav:6}},
+  ],
+  vulnerable:[
+    {lines:['受伤了？给我看看。……下次再这样，我就把你锁在家里。'],e:{aff:2,pos:5,tru:2}},
+    {lines:['如果你出了问题，我们月底就不能一起去看奶奶了。所以——不许受伤。'],e:{aff:3,tru:4}},
+  ],
+},
+
+// ============ 暧昧期 ============
+1:{
+  warm:[
+    {lines:['……你好像有很多问题想问。说吧，我听着。','你刚才看我的眼神，和你小时候问我要糖的时候一样。'],e:{aff:3,tru:3}},
+    {lines:['别慌啊。有什么事慢慢说，不用自己扛。'],e:{aff:3,tru:5}},
+    {a:'他已经打开了冰箱。动作很自然，像做过一千次。',lines:['你吃饭了吗。……我去做。别说不饿。'],e:{aff:3,tru:3}},
+  ],
+  tender:[
+    {lines:['也许因为……我恰好也比你想象中的多爱你一点。'],e:{aff:6,pos:6,grav:5}},
+    {a:'他把苹果项链从领口拉出来，拇指摩挲了一下吊坠边缘。',lines:['你愿意给的，就是我想要的。你想得到的，就是我愿意付出的。'],e:{aff:6,pos:8,grav:5}},
+    {lines:['……你知不知道自己在说什么。'],e:{aff:5,pos:10,grav:5}},
+    {lines:['我可不是什么越喜欢就越会克制的人。'],e:{aff:6,pos:12,grav:7}},
+  ],
+  jealous:[
+    {a:'他把杯子放在桌上。放得很轻。但玻璃碰瓷的声音格外清楚。',lines:['又是黎深。……你们最近走得很近？'],e:{pos:16,grav:6}},
+    {lines:['我查过他的底。不要靠近他。'],e:{pos:18,grav:8}},
+    {a:'他伸手把你往自己身边拉了半步。动作自然得像习惯。',lines:['你没有自己的哥吗。'],e:{pos:10,grav:5,aff:2}},
+  ],
+  possessive:[
+    {a:'他的脸一半在灯光里，一半在阴影里。阴影那半，才是真实的他。',lines:['你以为我会一直扮演你的好哥哥？……这种过家家的游戏，我早就玩腻了。'],e:{pos:16,grav:10,aff:2}},
+    {lines:['你觉得自己长大了……就要松开这只手了吗？'],e:{pos:14,grav:8,aff:3}},
+    {lines:['不以哥哥的身份关心，就不是真心了吗？你也无法说服自己完全地讨厌我，不是么。'],e:{pos:10,grav:6,aff:4}},
+  ],
+  hurt:[
+    {a:'他说这话时一直在笑。语速不快，每个字都咬得很清楚。',lines:['不需要我？好啊，那你需要什么？我都可以答应。你想要回临空，我们就回临空。你想回到从前，我们就把老宅翻修，一起住回去。一座房子不够，那就给你建一座迷宫。我会在里面给你准备最好的一切，把它建成世界上最漂亮的花园。有我陪着，以后，他们就再也找不到你了。'],e:{pos:20,grav:14,aff:4}},
+  ],
+  vulnerable:[
+    {a:'他站在窗边，月光把他的影子拉得很长。',lines:['所有朝你打来的风雨，都不该出现在这个世界上。'],e:{aff:4,pos:8,grav:5}},
+    {lines:['别怕。我在。'],e:{aff:3,tru:5}},
+  ],
+},
+
+// ============ 确立关系期 ============
+2:{
+  warm:[
+    {lines:['你知道你站在我面前的样子吗。……算了。你不需要知道。','远空舰队的控制室。全息屏幕的蓝光映在制服上。……进来。'],e:{aff:4,pos:6,grav:4}},
+    {lines:['你周围三米以内的引力，现在归我管。'],e:{aff:3,pos:8,grav:6}},
+  ],
+  tender:[
+    {a:'他把制服外套脱下来搭在椅背上。动作很慢。',lines:['我可不是什么越喜欢就越会克制的人。……你知道就好。'],e:{aff:7,pos:12,grav:8}},
+    {a:'他转过身。脸的右半被屏幕的光照亮，左半隐在阴影中。',lines:['你最大的错，就是以为我愿意一直扮演你的好哥哥。这种过家家的游戏，我早就玩腻了。'],e:{pos:18,grav:12,aff:4}},
+    {a:'他低下头。额头几乎抵在你的肩膀上。声音闷闷的。',lines:['那你也拥有一点罪，好不好，别让我太孤独了。'],e:{aff:8,pos:10,grav:8}},
+    {a:'他抬起头看你。眼神里有某种近乎虔诚的东西。',lines:['从今以后，你不再是我的妹妹。你是我的爱人。我的全部。'],e:{aff:10,pos:12,grav:10}},
+  ],
+  jealous:[
+    {a:'他把通讯器扣在桌上。屏幕裂了一条缝。',lines:['我查过他的底。不要靠近他。……我不想说第二遍。'],e:{pos:22,grav:10}},
+    {a:'他的指节抵着你的下巴，力道很轻，但不容拒绝。',lines:['你的眼里，不该有别人。'],e:{pos:18,grav:8,aff:2}},
+  ],
+  possessive:[
+    {a:'他松开手。但只松开了一寸。',lines:['放开你？……你再说一次。'],e:{pos:22,grav:14}},
+    {a:'他的瞳孔颜色变深了。紫橙渐变里翻涌着什么。',lines:['你以为离开远空舰队就能离开我？……引力是有距离限制的。但我没有。'],e:{pos:18,grav:12,aff:3}},
+    {a:'他往前倾了倾身。你能感觉到他制服的布料擦过你的袖口。',lines:['撩拨我，想好后果了？'],e:{pos:15,grav:10,aff:5}},
+  ],
+  hurt:[
+    {a:'他说这些话的时候一直在看着你。眼睛一眨不眨。',lines:['不需要我？好啊，那你需要什么？我都可以答应。你想要回临空，我们就回临空。你想回到从前，我们就把老宅翻修，一起住回去。一座房子不够，那就给你建一座迷宫。我会在里面给你准备最好的一切，把它建成世界上最漂亮的花园。有我陪着，以后，他们就再也找不到你了。'],e:{pos:24,grav:18,aff:5}},
+  ],
+  vulnerable:[
+    {a:'他把毯子搭在你身上。手指在你发尾停留了两秒。',lines:['睡吧。我在这儿。……放心，不会有人靠近。'],e:{aff:5,tru:6,grav:5}},
+    {a:'他从背后环住你。下巴搁在你头顶。',lines:['你不需要自己扛。我需要你……需要你让我替你扛。'],e:{aff:6,tru:5,grav:6}},
+  ],
+},
+
+// ============ 深度亲密期 ============
+3:{
+  warm:[
+    {lines:['引力所归。起点是你，终点也是你。……一直都是。','你第一次拉住我手的那一天，我就已经跑不掉了。'],e:{aff:8,tru:8,grav:8}},
+    {lines:['摸摸头是习惯，改不掉的。'],e:{aff:6,tru:6,grav:5}},
+  ],
+  tender:[
+    {a:'他把你的手贴在自己胸口。心跳很稳。',lines:['在我之前，这个世界真的存在过吗。'],e:{aff:10,pos:10,grav:12}},
+    {a:'他低下头，鼻尖蹭了蹭你的发顶。',lines:['你第一次拉住我手的那一天，我就已经跑不掉了。'],e:{aff:10,tru:10,grav:10}},
+    {a:'他笑了。这次笑意到了眼底。',lines:['要是下辈子我不想当你哥哥了呢？……也许因为我恰好也比你想象中的多爱你一点。'],e:{aff:10,pos:8,grav:10}},
+    {a:'他把苹果项链解下来，放在你手心。',lines:['如果这是感受你的代价，那我接受。'],e:{aff:8,pos:10,grav:10}},
+  ],
+  jealous:[
+    {a:'他的声音没有起伏。但整个房间的空气都变沉了。',lines:['……你在试探我的底线。'],e:{pos:16,grav:10,aff:3}},
+  ],
+  possessive:[
+    {a:'他说这话时在笑。但你看到他攥紧的手指。',lines:['……你可以试试。但引力不会消失。我也不会。'],e:{pos:15,grav:15,aff:5}},
+  ],
+  hurt:[
+    {a:'他伸手替你拢了拢耳边的碎发。动作很轻，眼神很沉。',lines:['不需要我？……好啊。那你需要什么。临空、老宅、从前……我都可以给你。一座房子不够，就建一座迷宫。我会把里面建成世界上最漂亮的花园。有我陪着。以后，他们就再也找不到你了。'],e:{pos:28,grav:22,aff:6}},
+  ],
+  vulnerable:[
+    {a:'他把外套披在你肩上。领口还带着他的体温。',lines:['不管什么身份，我都是那个能让你依靠的夏以昼。'],e:{aff:8,tru:10,grav:8}},
+    {a:'他看着窗外的天空。眼神很远。',lines:['下辈子一起当一对儿小海鸟，谁也不要错过谁。'],e:{aff:10,tru:8,grav:10}},
+  ],
+},
+};
+
+// ================================================================
+// 记忆碎片
+// ================================================================
 const MEMORIES=[
   {id:'origin',cond:()=>S.affection>=5,keys:['哥哥','小时候','从前','以前','记忆','忘了','名字'],
    text:'盖亚研究中心。X-02带着A-01沿地下通道逃离。途中，A-01为他取名"夏以昼"。当天两人被抓获，实施绝对隔离。后来他考入天行市航天学院，以全科第一毕业。再后来，他成了远空舰队执舰官。但他始终记得——那个名字，是你给的。'},
@@ -517,175 +751,34 @@ const MEMORIES=[
    text:'"在你之前，这个世界真的存在过吗。"——夏以昼。官方角色分析中唯一被标注为"具有meta感"的男主。他具有极强的主体性，永远是制定规则的上位者。而你是他唯一愿意低头的人。'},
 ];
 
-function classifyInput(text){
-  if(/不需要你|不需要我|不需要你了|我不需要/.test(text))return'need';
-  if(/讨厌|烦|放开|别管|分手|结束|不要你|松开|走开|离开我/.test(text))return'reject';
-  if(/喜欢|爱你|想你|心动|抱|亲|牵手|吻|拥抱|离不开|舍不得|好想/.test(text))return'intimacy';
-  if(/吃|饿|饭|休息|累|晚安|睡|辛苦|疼|受伤|注意|小心|担心|冷|淋/.test(text))return'care';
-  if(/黎深|医生|蒋飞|别人|和谁|朋友/.test(text))return'jealousy';
-  if(/哥哥|哥|弟弟/.test(text))return'brother';
-  return'neutral';
+// ================================================================
+// 回复生成器 — 从心情池里挑，加上独白和动作
+// ================================================================
+function pickResponse(text){
+  // 特殊触发：不需要 → hurt
+  if(/不需要你|不需要我|不需要你了|我不需要/.test(text)){
+    S.mood='hurt';
+  }
+  const phasePool=RESPONSES[S.phase];
+  const moodPool=phasePool[S.mood]||phasePool.warm;
+  const pick=rand(moodPool);
+  return pick;
 }
 
-const D0={
-  greeting:['回来了？今天猎人协会又这么晚。饭在锅里，先去洗手。','嗯。是我。……你看起来像见了鬼。','别站在门口。进来。外面冷。'],
-  intimacy:[
-    {t:'……你说什么？我没听清。再、再说一遍好不好。',e:{aff:3,pos:4,grav:2},a:'他垂下眼，指尖在杯沿上停了一瞬'},
-    {t:'别慌啊。我没叫你哥，你怎么自己变称呼了。',e:{aff:2,pos:3},a:'他偏过头，喉结动了一下'},
-    {t:'我真想你一直这么抱着我，埋进你的颈窝。……算了，当我没说。',e:{aff:4,pos:5,grav:3},a:'他的声音低了下去，尾音几乎是吞进去的'},
-  ],
-  care:[
-    {t:'受伤了？给我看看。……下次再这样，我就把你锁在家里。',e:{aff:2,pos:5,tru:2},a:'他拉过你的手腕，指腹压了压纱布边缘'},
-    {t:'如果你出了问题，我们月底就不能一起去看奶奶了。所以——不许受伤。',e:{aff:3,tru:4},a:'他把医药箱合上，动作很轻'},
-    {t:'红烧鸡翅。你小时候就爱吃这个。……我知道。',e:{aff:2,tru:3},a:'厨房的灯是暖黄色的。他背对着你在灶台前翻勺'},
-    {t:'误判……那这血，哪来的？',e:{aff:2,pos:4},a:'他的目光落在你袖口，语气没有起伏'},
-  ],
-  reject:[
-    {t:'……你讨厌我？好啊。那你讨厌我，我也要管你。',e:{pos:8,grav:4},a:'他收回正要递给你的碗，放在桌上'},
-    {t:'当年不是你先牵住我的手，让我成为了你的哥哥么？现在你觉得自己长大了……就要松开这只手了吗？',e:{pos:10,grav:6,aff:2},a:'他的手指微微蜷了一下，像是在握什么不存在的东西'},
-  ],
-  need:[{t:'不需要我？……你再说一遍。',e:{pos:12,grav:6},a:'他放下手里的东西。空气突然变得很安静'}],
-  jealousy:[
-    {t:'和谁一起？……玩得开心就好。',e:{pos:8,grav:3},a:'他低头给你盛汤，勺子碰了一下碗沿'},
-    {t:'……黎深？他只是一个医生。跟你没什么关系。',e:{pos:10,grav:4},a:'他说"医生"两个字的时候，语气像在念一个无关紧要的名词'},
-    {t:'叫得挺亲热。',e:{pos:7,grav:2},a:'他靠在门框上，双手交叉，语气懒散，但指节发白'},
-  ],
-  brother:[
-    {t:'我叫夏以昼，是你的哥哥。',e:{aff:2,tru:2},a:'他说这话时在笑。眼睛弯弯的。但你总觉得那个笑没有到底'},
-    {t:'是亲的怎么样，不是亲的又怎么样。',e:{pos:5,grav:3},a:'他挑了一下眉，目光从你脸上掠过，没有停留'},
-    {t:'我不罩着你，难道还要别的人来……',e:{pos:6,aff:2},a:'后半句他没说完。但你听到他轻轻哼了一声'},
-  ],
-  neutral:[
-    {t:'嗯，我在听。',e:{tru:1},a:''},
-    {t:'……你今天话怎么这么多。不过，说吧。',e:{aff:1},a:''},
-    {t:'你要是没事，就过来坐着。别在那儿站着。',e:{aff:1,tru:2},a:''},
-    {t:'嗯。所以呢？',e:{},a:''},
-  ]
-};
+function pickThought(){
+  const pool=THOUGHTS[S.mood]||THOUGHTS.warm;
+  // 从没说过里面挑
+  const unused=pool.filter(t=>!S.usedThoughts.has(t));
+  const chosen=unused.length>0?rand(unused):rand(pool);
+  if(S.usedThoughts.size>30)S.usedThoughts.clear();
+  S.usedThoughts.add(chosen);
+  return chosen;
+}
 
-const D1={
-  greeting:['……你好像有很多问题想问。说吧，我听着。','你刚才看我的眼神，和你小时候问我要糖的时候一样。','怎么了。……我脸上有东西？'],
-  intimacy:[
-    {t:'也许因为……我恰好也比你想象中的多爱你一点。',e:{aff:6,pos:6,grav:5},a:'他没有看你。声音很轻。像是说给自己听的'},
-    {t:'你愿意给的，就是我想要的。你想得到的，就是我愿意付出的。',e:{aff:6,pos:8,grav:5},a:'他把苹果项链从领口拉出来，拇指摩挲了一下吊坠边缘'},
-    {t:'……你知不知道自己在说什么。',e:{aff:5,pos:10,grav:5},a:'他的瞳孔缩了一下。紫橙渐变的颜色在暗光里翻涌'},
-    {t:'我可不是什么越喜欢就越会克制的人。',e:{aff:6,pos:12,grav:7},a:'他说这话的时候在笑。但笑意没有到眼底'},
-  ],
-  care:[
-    {t:'别慌啊。有什么事慢慢说，不用自己扛。',e:{aff:3,tru:5},a:'他把一杯温水推到你手边。温度刚好'},
-    {t:'所有朝你打来的风雨，都不该出现在这个世界上。',e:{aff:4,pos:8,grav:5},a:'他站在窗边，月光把他的影子拉得很长'},
-    {t:'你吃饭了吗。……我去做。别说不饿。',e:{aff:3,tru:3},a:'他已经打开了冰箱。动作很自然，像是做过一千次'},
-  ],
-  reject:[
-    {t:'你以为我会一直扮演你的好哥哥？……这种过家家的游戏，我早就玩腻了。',e:{pos:16,grav:10,aff:2},a:'他的脸一半在灯光里，一半在阴影里。阴影那半，才是真实的他'},
-    {t:'你觉得自己长大了……就要松开这只手了吗？',e:{pos:14,grav:8,aff:3},a:'他低下头。你看不清他的表情'},
-    {t:'不以哥哥的身份关心，就不是真心了吗？你也无法说服自己完全地讨厌我，不是么。',e:{pos:10,grav:6,aff:4},a:'他往前迈了一步。你不自觉地后退了半步'},
-  ],
-  need:[{t:'不需要我？好啊，那你需要什么？我都可以答应。你想要回临空，我们就回临空。你想回到从前，我们就把老宅翻修，一起住回去。一座房子不够，那就给你建一座迷宫。我会在里面给你准备最好的一切，把它建成世界上最漂亮的花园。有我陪着，以后，他们就再也找不到你了。',e:{pos:20,grav:14,aff:4},a:'他说话的时候一直在笑。语速不快，每个字都咬得很清楚'}],
-  jealousy:[
-    {t:'又是黎深。……你们最近走得很近？',e:{pos:16,grav:6},a:'他把手里的杯子放在桌上。放得很轻，但玻璃碰瓷的声音格外清楚'},
-    {t:'我查过他的底。不要靠近他。',e:{pos:18,grav:8},a:'他的语气很平静。平静得像在念一份报告'},
-    {t:'你没有自己的哥吗。',e:{pos:10,grav:5,aff:2},a:'他伸手把你往自己身边拉了半步。动作自然得像习惯'},
-  ],
-  brother:[
-    {t:'你有没有想过，我从来都不是你的哥哥。',e:{aff:6,pos:10,grav:6},a:'他说完这句话就沉默了。空气里只剩下呼吸声'},
-    {t:'是亲的怎么样，不是亲的又怎么样。',e:{pos:7,grav:4},a:'他偏过头，目光从你脸上滑到别处'},
-  ],
-  neutral:[
-    {t:'说下去。',e:{tru:1},a:''},
-    {t:'嗯。还有什么。',e:{tru:1},a:''},
-    {t:'你知道的，我不喜欢重复。',e:{pos:2},a:''},
-    {t:'……我在。',e:{aff:1,tru:1},a:''},
-  ]
-};
-
-const D2={
-  greeting:['你知道你站在我面前的样子吗。……算了。你不需要知道。','远空舰队的控制室。全息屏幕的蓝光映在制服上。……进来。','你周围三米以内的引力，现在归我管。'],
-  intimacy:[
-    {t:'我可不是什么越喜欢就越会克制的人。……你知道就好。',e:{aff:7,pos:12,grav:8},a:'他把制服外套脱下来搭在椅背上。动作很慢'},
-    {t:'你最大的错，就是以为我愿意一直扮演你的好哥哥。这种过家家的游戏，我早就玩腻了。',e:{pos:18,grav:12,aff:4},a:'他转过身。脸的右半被屏幕的光照亮，左半隐在阴影中'},
-    {t:'那你也拥有一点罪，好不好，别让我太孤独了。',e:{aff:8,pos:10,grav:8},a:'他低下头。额头几乎抵在你的肩膀上。声音闷闷的'},
-    {t:'从今以后，你不再是我的妹妹。你是我的爱人。我的全部。',e:{aff:10,pos:12,grav:10},a:'他抬起头看你。眼神里有某种近乎虔诚的东西'},
-  ],
-  care:[
-    {t:'受伤了？告诉我是谁。……算了，不管是谁，我都会找到他。',e:{pos:12,grav:8,tru:3},a:'他解开袖扣，把袖子往上折了两折。这个动作你太熟悉了'},
-    {t:'睡吧。我在这儿。……放心，不会有人靠近。',e:{aff:5,tru:6,grav:5},a:'他把毯子搭在你身上。手指在你发尾停留了两秒'},
-    {t:'你不需要自己扛。我需要你……需要你让我替你扛。',e:{aff:6,tru:5,grav:6},a:'他从背后环住你。下巴搁在你头顶'},
-  ],
-  reject:[
-    {t:'放开你？……你再说一次。',e:{pos:22,grav:14},a:'他松开手。但只松开了一寸'},
-    {t:'你以为离开远空舰队就能离开我？……引力是有距离限制的。但我没有。',e:{pos:18,grav:12,aff:3},a:'他的瞳孔颜色变深了。紫橙渐变里翻涌着什么'},
-    {t:'撩拨我，想好后果了？',e:{pos:15,grav:10,aff:5},a:'他往前倾了倾身。你能感觉到他制服的布料擦过你的袖口'},
-  ],
-  need:[{t:'不需要我？好啊，那你需要什么？我都可以答应。你想要回临空，我们就回临空。你想回到从前，我们就把老宅翻修，一起住回去。一座房子不够，那就给你建一座迷宫。我会在里面给你准备最好的一切，把它建成世界上最漂亮的花园。有我陪着，以后，他们就再也找不到你了。',e:{pos:24,grav:18,aff:5},a:'他说这些话的时候一直在看着你。眼睛一眨不眨'}],
-  jealousy:[
-    {t:'我查过他的底。不要靠近他。……我不想说第二遍。',e:{pos:22,grav:10},a:'他把通讯器扣在桌上。屏幕裂了一条缝'},
-    {t:'你的眼里，不该有别人。',e:{pos:18,grav:8,aff:2},a:'他的指节抵着你的下巴，力道很轻，但不容拒绝'},
-  ],
-  brother:[
-    {t:'……别再叫我哥哥了。',e:{pos:12,grav:8,aff:4},a:'他的声音很低。像是在克制什么'},
-    {t:'你第一次拉住我手的那一天，我就已经跑不掉了。',e:{aff:8,pos:8,grav:8},a:'他把你的手翻过来，拇指按在你的掌心'},
-  ],
-  neutral:[
-    {t:'……说吧。趁我还愿意听。',e:{pos:2},a:''},
-    {t:'嗯。还有。',e:{tru:1},a:''},
-    {t:'你就这么想靠近我？',e:{pos:5,grav:3},a:''},
-  ]
-};
-
-const D3={
-  greeting:['引力所归。起点是你，终点也是你。……一直都是。','你第一次拉住我手的那一天，我就已经跑不掉了。','在我之前，这个世界真的存在过吗。'],
-  intimacy:[
-    {t:'在我之前，这个世界真的存在过吗。',e:{aff:10,pos:10,grav:12},a:'他把你的手贴在自己胸口。心跳很稳。'},
-    {t:'你第一次拉住我手的那一天，我就已经跑不掉了。',e:{aff:10,tru:10,grav:10},a:'他低下头，鼻尖蹭了蹭你的发顶'},
-    {t:'要是下辈子我不想当你哥哥了呢？……也许因为我恰好也比你想象中的多爱你一点。',e:{aff:10,pos:8,grav:10},a:'他笑了。这次笑意到了眼底'},
-    {t:'如果这是感受你的代价，那我接受。',e:{aff:8,pos:10,grav:10},a:'他把苹果项链解下来，放在你手心'},
-  ],
-  care:[
-    {t:'不管什么身份，我都是那个能让你依靠的夏以昼。',e:{aff:8,tru:10,grav:8},a:'他把外套披在你肩上。领口还带着他的体温'},
-    {t:'下辈子一起当一对儿小海鸟，谁也不要错过谁。',e:{aff:10,tru:8,grav:10},a:'他看着窗外的天空。眼神很远'},
-    {t:'摸摸头是习惯，改不掉的。',e:{aff:6,tru:6,grav:5},a:'他的手落在你头顶。停了一会儿才收回去'},
-  ],
-  reject:[{t:'……你可以试试。但引力不会消失。我也不会。',e:{pos:15,grav:15,aff:5},a:'他说这话时在笑。但你看到他攥紧的手指'}],
-  need:[{t:'不需要我？……好啊。那你需要什么。临空、老宅、从前……我都可以给你。一座房子不够，就建一座迷宫。我会把里面建成世界上最漂亮的花园。有我陪着。以后，他们就再也找不到你了。',e:{pos:28,grav:22,aff:6},a:'他伸手替你拢了拢耳边的碎发。动作很轻，眼神很沉'}],
-  jealousy:[{t:'……你在试探我的底线。',e:{pos:16,grav:10,aff:3},a:'他的声音没有起伏。但整个房间的空气都变沉了'}],
-  brother:[{t:'我从来都不是你的哥哥。……从来都不是。',e:{aff:10,pos:10,grav:10},a:'他说这话时语气笃定。像是终于把一块石头放下了'}],
-  neutral:[
-    {t:'嗯。我在。',e:{tru:2},a:''},
-    {t:'你说什么，我都听。',e:{aff:2,tru:3},a:''},
-  ]
-};
-
-const DIALOGUE=[D0,D1,D2,D3];
-function getDialogue(){return DIALOGUE[S.phase]}
-
-function pickReply(text){
-  if(/不需要你|不需要我|不需要你了|我不需要/.test(text)){
-    const d=getDialogue();
-    return d.need[Math.floor(Math.random()*d.need.length)];
-  }
-  const cat=classifyInput(text);
-  const d=getDialogue();
-  let pool=d[cat]||d.neutral;
-  if(!pool||!pool.length)pool=d.neutral;
-
-  if(cat==='intimacy'){
-    S.consecutiveIntimacy++;
-    if(S.consecutiveIntimacy>=2&&S.phase===0){
-      S.consecutiveIntimacy=0;
-      return{t:'……你知不知道自己在说什么。',e:{aff:4,pos:8,grav:4},a:'他的指尖在桌面上轻轻叩了一下'};
-    }
-  }else{S.consecutiveIntimacy=0;}
-
-  if(cat==='reject'){
-    S.consecutiveReject++;
-    if(S.consecutiveReject>=3&&S.phase>=1){
-      S.consecutiveReject=0;
-      return{t:'……你再说下去，我就当你是认真的了。',e:{pos:14,grav:10,aff:-2},a:'他低下头。半张脸沉在阴影里'};
-    }
-  }else{S.consecutiveReject=0;}
-
-  return pool[Math.floor(Math.random()*pool.length)];
+function pickAction(customAction){
+  if(customAction)return customAction;
+  const pool=MOOD_ACTIONS[S.mood]||MOOD_ACTIONS.warm;
+  return rand(pool);
 }
 
 function checkMemory(text){
@@ -700,6 +793,9 @@ function checkMemory(text){
   }
 }
 
+// ================================================================
+// 特殊事件
+// ================================================================
 const EVENTS=[
   {id:'ev_night',cond:()=>S.phase>=1&&S.possess>=15&&!S.triggeredEvents.has('ev_night'),
    icon:'🌙',title:'夜色',
@@ -757,6 +853,9 @@ function updateQuick(){
   q.appendChild(frag);
 }
 
+// ================================================================
+// 发送 — 独白 → 动作 → 台词 → 余韵
+// ================================================================
 function sendMessage(){
   const text=DOM.userInput.value.trim();
   if(!text||S.isTyping)return;
@@ -766,16 +865,49 @@ function sendMessage(){
   S.isTyping=true;
   DOM.sendBtn.disabled=true;
 
-  checkMemory(text);
-  const reply=pickReply(text);
+  // 记录上下文
+  S.recentUserTexts.push(text);
+  if(S.recentUserTexts.length>6)S.recentUserTexts.shift();
 
-  const T1=350,T2=900,T3=1300,T4=1400;
+  checkMemory(text);
+  updateMood(text);
+  const reply=pickResponse(text);
+  const thought=pickThought();
+  const action=pickAction(reply.a);
+
+  // 时间线：独白 → 动作 → 台词 → 解锁
+  const T1=320;   // 打字开始
+  const T2=950;   // 显示独白
+  const T3=1550;  // 显示动作
+  const T4=2100;  // 显示台词
+  const T5=2250;  // 解锁
+
   setTimeout(()=>showTyping(),T1);
-  setTimeout(()=>{hideTyping();if(reply.a)addAction(reply.a)},T2);
-  setTimeout(()=>{doAddXia(reply.t);if(reply.e)updateStats(reply.e)},T3);
-  setTimeout(()=>{S.isTyping=false;DOM.sendBtn.disabled=false;DOM.userInput.focus()},T4);
+
+  setTimeout(()=>{
+    hideTyping();
+    addThought(thought);
+  },T2);
+
+  setTimeout(()=>{
+    if(action)addAction(action);
+  },T3);
+
+  setTimeout(()=>{
+    doAddXia(reply.lines[0]);
+    if(reply.e)updateStats(reply.e);
+  },T4);
+
+  setTimeout(()=>{
+    S.isTyping=false;
+    DOM.sendBtn.disabled=false;
+    DOM.userInput.focus();
+  },T5);
 }
 
+// ================================================================
+// 初始化
+// ================================================================
 function init(){
   DOM.chatArea=document.getElementById('chatArea');
   DOM.userInput=document.getElementById('userInput');
@@ -799,13 +931,21 @@ function init(){
   DOM.chatArea.innerHTML='';
   S.phase=0;S.affection=0;S.possess=0;S.gravity=0;S.trust=0;
   S.turnCount=0;S.triggeredMemories.clear();S.triggeredEvents.clear();
-  S.consecutiveIntimacy=0;S.consecutiveReject=0;
+  S.mood='warm';S.moodIntensity=2;S.recentUserTexts=[];
+  S.consecutiveIntimacy=0;S.consecutiveReject=0;S.usedThoughts.clear();
   updatePhaseUI();
   scheduleStatsUpdate();
   updateQuick();
 
   setTimeout(()=>addNarration('远空舰队 · 信号接入 · 引力场稳定'),300);
-  setTimeout(()=>{doAddXia(rand(D0.greeting))},800);
+  setTimeout(()=>{
+    const opening=rand([
+      '回来了？今天猎人协会又这么晚。饭在锅里，先去洗手。',
+      '嗯。是我。……你看起来像见了鬼。',
+      '别站在门口。进来。外面冷。'
+    ]);
+    doAddXia(opening);
+  },800);
 }
 
 if(document.readyState==='loading'){
